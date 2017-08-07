@@ -1,0 +1,133 @@
+swagger:
+  resourcePackage: com.snapdeal.olp.locationmaster.resources
+
+geocodingRequestQueue: <%= @geocoding_request_queue %>
+# https://github.com/mbknor/dropwizard-activemq-bundle
+activeMQ:
+  brokerUrl: <%= @locationmaster_activemq_broker_url %>
+  # brokerUrl: failover:(tcp://broker1.com:61616,tcp://broker2.com:61616)?randomize=false
+  # healthCheckMillisecondsToWait: 2000
+  # timeToLiveInSeconds: -1     (Default message time-to-live is off. Specify a maximum lifespan here in seconds for all messages.)
+  pool:
+    blockIfSessionPoolIsFull: <%= @locationmaster_activemq_block_if_session_pool_is_full %>
+    createConnectionOnStartup: <%= @locationmaster_activemq_create_connection_on_startup %>
+    timeBetweenExpirationCheckMillis: <%= @locationmaster_activemq_time_between_expiration_check_millis %>
+
+server:
+  rootPath: '/locationmaster/*'
+  applicationConnectors:
+    - type: <%= @locationmaster_application_connector_type %>
+      port: <%= @locationmaster_application_connector_port %>
+  adminConnectors:
+    - type: <%= @locationmaster_admin_connector_type %>
+      port: <%= @locationmaster_admin_connector_port %>
+  minThreads: 8
+  maxThreads: 512
+  maxQueuedRequests: 128
+  requestLog:
+    appenders:
+      - type: console
+      - type: file
+        currentLogFilename: <%= @locationmaster_logs_location %>/access.log
+        threshold: ALL
+        archive: true
+        archivedLogFilenamePattern: <%= @locationmaster_logs_location %>/access.%d{yyyy-MM-dd-HH}.log.gz
+        archivedFileCount: <%= @locationmaster_archived_log_file_count %>
+
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: <%= @locationmaster_log_level %>
+
+  # Logger-specific levels.
+  loggers:
+    "com.snapdeal.olp": <%= @locationmaster_specific_logger_log_level %>
+    "io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper": DEBUG
+
+  # Logback's Time Based Rolling Policy - archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}.log.gz
+  # Logback's Size and Time Based Rolling Policy -  archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}-%i.log.gz
+  # Logback's Fixed Window Rolling Policy -  archivedLogFilenamePattern: /tmp/application-%i.log.gz
+  appenders:
+    - type: console
+      threshold: ERROR
+      target: stderr
+
+    - type: file
+
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+
+      # The file to which current statements will be logged.
+      currentLogFilename: <%= @locationmaster_logs_location %>/locationmaster.log
+
+      # When the log file rotates, the archived log will be renamed to this and gzipped. The
+      # %d is replaced with the previous day (yyyy-MM-dd). Custom rolling windows can be created
+      # by passing a SimpleDateFormat-compatible format as an argument: "%d{yyyy-MM-dd-hh}".
+      archivedLogFilenamePattern: <%= @locationmaster_logs_location %>/locationmaster-%d{yyyy-MM-dd-HH}.log.gz
+
+      # The number of archived files to keep.
+      archivedFileCount: <%= @locationmaster_archived_log_file_count %>
+
+      # The timezone used to format dates. HINT: USE THE DEFAULT, UTC.
+      timeZone: IST
+
+
+minDisplacementForPositionUpdate: <%= @min_displacement_for_position_update %>
+asyncGeocodingRetryInterval: <%= @async_geocoding_retry_interval %>
+
+syncGeocodeProvider: <%= @sync_geocode_provider %>
+asyncGeocodeProvider: <%= @async_geocode_provider %>
+primaryForFallbackGeocodeProvider: <%= @primary_for_fallback_geocode_provider %>
+secondaryForFallbackGeocodeProvider: <%= @secondary_for_fallback_geocode_provider %>
+
+googleClientConfiguration:
+  googleGeocodeApiKeys: <%= @google_geocode_api_keys %>
+  googleGeocodeConnectionTimeout: <%= @google_geocode_connection_timeout %>
+  googleGeocodeRetryTimeout: <%= @google_geocode_retry_timeout %>
+  googleGeocodeRotateKeyOnQuotaExceeded: <%= @google_geocode_rotate_key_on_quota_exceeded %>
+  googleGeocodeMaxQps: <%= @google_geocode_max_qps %>
+
+nominatimGeocoderEndPoint: <%= @nominatim_geocoder_end_point %>
+nominatimGeocodingClientConfig:
+  timeout: <%= @nominatim_geocoder_request_timeout %>
+  connectionTimeout: <%= @nominatim_geocoder_connection_timeout %>
+
+# Metrics reporting
+metrics:
+  reporters:
+    - type: influxdb
+      protocol: <%= @influxdb_protocol %>
+      host: <%= @influxdb_host %>
+      port: <%= @influxdb_port %>
+      database: <%= @locationmaster_influxdb_database %>
+      frequency: <%= @locationmaster_influxdb_frequency %>
+      measurementMappings:
+        geocoding: .*\.geocoding?.*
+      fields:
+        timers: [count, min, max, p50, p98, p99, m5_rate]
+        meters: [count, m5_rate]
+      tags:
+        host: <%= @app_server_hostname %>
+      excludes:
+        - ch.qos.logback.core.Appender.debug
+        - ch.qos.logback.core.Appender.trace
+        - io.dropwizard.jetty.MutableServletContextHandler.percent-4xx-15m
+        - io.dropwizard.jetty.MutableServletContextHandler.percent-4xx-1m
+        - io.dropwizard.jetty.MutableServletContextHandler.percent-4xx-5m
+        - io.dropwizard.jetty.MutableServletContextHandler.percent-5xx-15m
+        - io.dropwizard.jetty.MutableServletContextHandler.percent-5xx-1m
+        - jvm.attribute.name
+        - jvm.attribute.vendor
+        - jvm.memory.heap.usage
+        - jvm.memory.non-heap.usage
+        - jvm.memory.pools.Code-Cache.usage
+        - jvm.memory.pools.Compressed-Class-Space.usage
+        - jvm.memory.pools.Metaspace.usage
+        - jvm.memory.pools.PS-Eden-Space.usage
+        - jvm.memory.pools.PS-Old-Gen.usage
+        - jvm.memory.pools.PS-Survivor-Space.usage
+
+adminUser:
+  name: <%= @admin_user_name %>
+  password: <%= @admin_user_password %>
+  roles: <%= @admin_user_roles %>
