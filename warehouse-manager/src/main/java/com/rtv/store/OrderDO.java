@@ -7,7 +7,7 @@ import org.mongodb.morphia.annotations.*;
  * Created by Tanvi on 09/08/17.
  */
 
-@Entity("Order")
+@Entity(value = "Order", noClassnameStored = true)
 public class OrderDO {
     @Id
     private String id;
@@ -35,4 +35,5 @@ public class OrderDO {
     public void setOrderType(Constants.OrderType orderType) {
         this.orderType = orderType.name();
     }
+
 }
