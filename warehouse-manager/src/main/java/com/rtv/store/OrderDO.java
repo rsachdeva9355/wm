@@ -7,7 +7,7 @@ import org.mongodb.morphia.annotations.*;
  * Created by Tanvi on 09/08/17.
  */
 
-@Entity(value = "Order", noClassnameStored = true)
+@Entity(value = "order", noClassnameStored = true)
 public class OrderDO {
     @Id
     private String id;
