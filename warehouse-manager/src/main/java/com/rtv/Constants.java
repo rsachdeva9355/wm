@@ -6,6 +6,11 @@ package com.rtv;
 public class Constants {
     public enum OrderType {
         SALE,
-        PURCHASE;
+        PURCHASE
+    }
+
+    public enum ThirdPartyType {
+        SELLER,
+        BUYER
     }
 }
