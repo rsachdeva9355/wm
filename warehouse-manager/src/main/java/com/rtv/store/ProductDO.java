@@ -14,9 +14,6 @@ public class ProductDO {
     private String id;
 
     @Property
-    private String productID;
-
-    @Property
     private String companyProductName;
 
     @Property

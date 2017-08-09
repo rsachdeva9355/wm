@@ -13,19 +13,16 @@ public class OrderDO {
     private String id;
 
     @Property
-    private String orderID;
-
-    @Property
     private String orderType;
 
     private OrderDO() {}
 
-    public String getOrderID() {
-        return orderID;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Constants.OrderType getOrderType() {
