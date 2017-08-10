@@ -2,11 +2,13 @@ package com.rtv.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rtv.Constants;
 import com.rtv.models.Order;
 import com.rtv.store.OrderDO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +56,54 @@ public class OrderResource {
     {
         OrderDO orderDO;
         validateOrders(order);
+        //TODO - check for duplicate orders
+        orderDO = new OrderDO();
+        orderDO.setId(new ObjectId().toString());
+        orderDO.setOrderType(Constants.OrderType.valueOf(order.getOrderType()));    //can avoid this - kept for validation purposes. Or can keep it in the validation code
+        orderDO.setUserID(order.getUserID());
+        orderDO.setDate(order.getDate());
+        orderDO.setThirdPartyID(order.getThirdPartyID());
+        orderDO.setProductID(order.getProductID());
+        orderDO.setBatchID(order.getBatchID());
+        orderDO.setCostPrice(order.getCostPrice());
+        orderDO.setGst(order.getGst());
+        orderDO.setTotalCost(order.getTotalCost());
+        orderDO.setQuantity(order.setQuantity());
         return order;
     }
 
     public void validateOrders(Order order) {
-
+        if (order.getUserID() == null) {
+            //TODO - user authentication
+        }
+        if (order.getBatchID() == null) {
+            throwWhatError();
+        }
+        if (order.getCostPrice() == null) {
+            throwWhatError();
+        }
+        if (order.getDate() == null) {
+            throwWhatError();
+        }
+        if (order.getGst() == null) {
+            throwWhatError();
+        }
+        if (order.getOrderType() == null) {
+            throwWhatError();
+        }
+        if (order.getProductID() == null) {
+            throwWhatError();
+        }
+        if (order.getQuantity() == null) {
+            throwWhatError();
+        }
+        if (order.getThirdPartyID() == null) {
+            throwWhatError();
+        }
+        if (order.getTotalCost() == null) {
+            throwWhatError();
+        }
     }
+
+    public void throwWhatError() {}
 }

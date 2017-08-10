@@ -42,7 +42,7 @@ public class OrderDO {
     @Property
     private Integer quantity;
 
-    private OrderDO() {}
+    public OrderDO() {}
 
     public String getId() {
         return id;
