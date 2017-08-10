@@ -1,4 +1,4 @@
-package com.rtv;
+package com.rtv.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;

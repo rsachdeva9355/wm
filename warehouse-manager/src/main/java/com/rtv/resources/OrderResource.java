@@ -1,4 +1,4 @@
-package com.rtv;
+package com.rtv.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,8 +53,11 @@ public class OrderResource {
                 )
     {
         OrderDO orderDO;
-        //TODO - code for validating this order will go where?
-        
-        return //TODO - kya return karna hai kaise?
+        validateOrders(order);
+        return order;
+    }
+
+    public void validateOrders(Order order) {
+
     }
 }

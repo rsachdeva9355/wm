@@ -1,4 +1,4 @@
-package com.rtv;
+package com.rtv.resources;
 
 import com.codahale.metrics.SharedMetricRegistries;
 import com.fasterxml.jackson.databind.ObjectMapper;

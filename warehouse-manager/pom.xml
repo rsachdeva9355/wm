@@ -96,7 +96,7 @@
                         <!-- Application Layer Protocol Negotiation for http/2 support -->
                         <!-- <argument>-Xbootclasspath/p:org.mortbay.jetty.alpn:alpn-boot</argument> -->
                         <argument>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8888</argument>
-                        <argument>com.rtv.WarehouseManager</argument>
+                        <argument>com.rtv.resources.WarehouseManager</argument>
                         <argument>server</argument>
                         <argument>locationmaster.yml</argument>
                     </arguments>
@@ -167,7 +167,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.rtv.WarehouseManager</mainClass>
+                                    <mainClass>com.rtv.resources.WarehouseManager</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
