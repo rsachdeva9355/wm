@@ -1,8 +1,8 @@
-package com.rtv.resources;
+package com.rtv.resource;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rtv.models.Order;
+import com.rtv.model.Order;
 import com.rtv.store.OrderDO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

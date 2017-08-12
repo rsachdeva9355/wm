@@ -10,6 +10,9 @@ public class WarehouseManagerConfiguration extends Configuration {
     @JsonProperty("swagger")
     private SwaggerBundleConfiguration swaggerBundleConfiguration;
 
+    @JsonProperty("signingKey")
+    private String signingKey;
+
     public SwaggerBundleConfiguration getSwaggerBundleConfiguration() {
         return swaggerBundleConfiguration;
     }
@@ -18,4 +21,7 @@ public class WarehouseManagerConfiguration extends Configuration {
         return PropertiesConfiguration.getInstance().getMongoConfiguration();
     }
 
+    public String getSigningKey() {
+        return signingKey;
+    }
 }

@@ -5,10 +5,10 @@ server:
   rootPath: '/*'
   applicationConnectors:
     - type: http
-      port: 8080
+      port: 9010
   adminConnectors:
     - type: http
-      port: 8081
+      port: 9011
   minThreads: 8
   maxThreads: 512
   maxQueuedRequests: 128
@@ -58,3 +58,5 @@ logging:
 
       # The timezone used to format dates. HINT: USE THE DEFAULT, UTC.
       timeZone: IST
+
+signingKey: 'hellopeople'

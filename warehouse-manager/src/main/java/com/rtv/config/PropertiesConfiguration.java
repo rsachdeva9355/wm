@@ -1,7 +1,7 @@
 package com.rtv.config;
 
 import com.meltmedia.dropwizard.mongo.MongoConfiguration;
-import com.rtv.resources.WarehouseManager;
+import com.rtv.WarehouseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

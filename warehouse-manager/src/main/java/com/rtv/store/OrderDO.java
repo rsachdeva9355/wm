@@ -1,14 +1,17 @@
 package com.rtv.store;
 
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Property;
+
 import com.rtv.Constants;
-import org.mongodb.morphia.annotations.*;
 
 /**
  * Created by Tanvi on 09/08/17.
  */
 
 @Entity(value = "order", noClassnameStored = true)
-public class OrderDO {
+public class OrderDO extends PersistedEntity {
     @Id
     private String id;
 

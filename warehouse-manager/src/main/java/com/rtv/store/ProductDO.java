@@ -9,7 +9,7 @@ import org.mongodb.morphia.annotations.Property;
  */
 
 @Entity(value = "product", noClassnameStored = true)
-public class ProductDO {
+public class ProductDO extends PersistedEntity {
     @Id
     private String id;
 

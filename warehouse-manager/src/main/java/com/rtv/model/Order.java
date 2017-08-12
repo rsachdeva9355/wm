@@ -1,4 +1,4 @@
-package com.rtv.models;
+package com.rtv.model;
 
 
 /**

@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
  * Created by Tanvi on 09/08/17.
  */
 @Entity(value = "thirdparty", noClassnameStored = true)
-public class ThirdPartyDO {
+public class ThirdPartyDO extends PersistedEntity {
 
     @Id
     private String id;

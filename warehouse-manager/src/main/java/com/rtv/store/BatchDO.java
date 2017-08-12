@@ -1,17 +1,17 @@
 package com.rtv.store;
 
+import java.util.Date;
+
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
-
-import java.util.Date;
 
 /**
  * Created by Tanvi on 09/08/17.
  */
 
 @Entity(value = "inventory", noClassnameStored = true)
-public class BatchDO {
+public class BatchDO extends PersistedEntity {
     @Id
     private String id;
 
