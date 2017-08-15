@@ -1,48 +1,34 @@
-package com.rtv.store;
+package com.rtv.api.auth;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Field;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Index;
-import org.mongodb.morphia.annotations.Indexes;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * Created by Tanvi on 09/08/17.
+ * Created by Tanvi on 15/08/17.
  */
+public class Batch {
 
-@Entity(value = "batch", noClassnameStored = true)
-@Indexes({
-        @Index(
-                fields = {
-                        @Field("productID")
-                }
-        ),
-        @Index(
-                fields = {
-                        @Field("code")
-                },
-                unique = true
-
-        )
-})
-public class BatchDO extends PersistedEntity {
-    @Id
     private String id;
     private String productID;
+
+    @NotBlank
     private String code;
+
+    @NotNull
     private Date mfgDate;
+
+    @NotNull
     private Date expDate;
     private String pack;
 
-    public BatchDO() {
-        this.id = new ObjectId().toString();
-    }
-
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getProductID() {

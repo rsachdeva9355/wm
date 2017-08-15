@@ -1,30 +1,38 @@
 package com.rtv.store;
 
+import com.rtv.api.auth.ThirdParty;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
 
 /**
  * Created by Tanvi on 09/08/17.
  */
 @Entity(value = "thirdparty", noClassnameStored = true)
+@Indexes(
+        @Index(
+                fields = {
+                        @Field("name")
+                },
+                unique = true
+        )
+)
 public class ThirdPartyDO extends PersistedEntity {
 
     @Id
     private String id;
-
-    @Property
     private String name;
+    private ThirdParty.ThirdPartyType type;
 
-    @Property
-    private String type;
+    public ThirdPartyDO() {
+        this.id = new ObjectId().toString();
+    }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -35,11 +43,11 @@ public class ThirdPartyDO extends PersistedEntity {
         this.name = name;
     }
 
-    public String getType() {
+    public ThirdParty.ThirdPartyType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ThirdParty.ThirdPartyType type) {
         this.type = type;
     }
 }

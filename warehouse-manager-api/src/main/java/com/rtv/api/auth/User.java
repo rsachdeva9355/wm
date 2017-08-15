@@ -1,18 +1,16 @@
 package com.rtv.api.auth;
 
-import java.security.Principal;
-
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+
+import java.security.Principal;
 
 public class User implements Principal {
 
     private String id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
     @NotBlank

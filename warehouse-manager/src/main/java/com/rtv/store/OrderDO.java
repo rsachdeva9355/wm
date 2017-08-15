@@ -1,69 +1,74 @@
 package com.rtv.store;
 
+import com.rtv.api.auth.Order;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
 
-import com.rtv.Constants;
+import java.util.Date;
 
 /**
  * Created by Tanvi on 09/08/17.
  */
 
 @Entity(value = "order", noClassnameStored = true)
+@Indexes({
+        @Index(
+                fields = {
+                        @Field("orderType")
+                }
+        ),
+        @Index(
+                fields = {
+                        @Field("userID")
+                }
+        ),
+        @Index(
+                fields = {
+                        @Field("thirdPartyID")
+                }
+        ),
+        @Index(
+                fields = {
+                        @Field("productID")
+                }
+        ),
+        @Index(
+                fields = {
+                        @Field("batchID")
+                }
+        )}
+)
 public class OrderDO extends PersistedEntity {
     @Id
     private String id;
-
-    @Property
-    private String orderType;
-
-    @Property
+    private Order.OrderType orderType;
     private String userID;
-
-    @Property
-    private Long date;
-
-    @Property
-    private Long thirdPartyID;
-
-    @Property
+    private Date date;
+    private String thirdPartyID;
     private String productID;
-
-    @Property
     private String batchID;
-
-    @Property
     private Float costPrice; //of individual product
-
-    @Property
     private Float gst;
-
-    @Property
     private Float totalCost;
-
-    @Property
     private Integer quantity;
 
-    private OrderDO() {}
+    public OrderDO() {
+        this.id = new ObjectId().toString();
+    }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Order.OrderType getOrderType() {
+        return orderType;
     }
 
-    public Constants.OrderType getOrderType() {
-        return Constants.OrderType.valueOf(orderType);
-    }
-
-    public void setOrderType(Constants.OrderType orderType) {
-        this.orderType = orderType.name();
-    }
-
-    public void setOrderType(String orderType) {
+    public void setOrderType(Order.OrderType orderType) {
         this.orderType = orderType;
     }
 
@@ -75,19 +80,19 @@ public class OrderDO extends PersistedEntity {
         this.userID = userID;
     }
 
-    public Long getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Long date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public Long getThirdPartyID() {
+    public String getThirdPartyID() {
         return thirdPartyID;
     }
 
-    public void setThirdPartyID(Long thirdPartyID) {
+    public void setThirdPartyID(String thirdPartyID) {
         this.thirdPartyID = thirdPartyID;
     }
 

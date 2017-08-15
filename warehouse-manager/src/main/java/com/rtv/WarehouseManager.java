@@ -1,15 +1,5 @@
 package com.rtv;
 
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.jwt.consumer.JwtContext;
-import org.jose4j.keys.HmacKey;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.codahale.metrics.SharedMetricRegistries;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -19,9 +9,13 @@ import com.rtv.api.auth.User;
 import com.rtv.auth.UserContext;
 import com.rtv.auth.filter.JwtAuthFilter;
 import com.rtv.config.WarehouseManagerConfiguration;
-import com.rtv.resource.UserResource;
 import com.rtv.resource.OrderResource;
-
+import com.rtv.resource.UserResource;
+import com.rtv.store.BatchDAO;
+import com.rtv.store.OrderDAO;
+import com.rtv.store.ProductDAO;
+import com.rtv.store.ThirdPartyDAO;
+import com.rtv.store.UserDAO;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
@@ -30,6 +24,15 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.jwt.consumer.JwtContext;
+import org.jose4j.keys.HmacKey;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WarehouseManager extends Application<WarehouseManagerConfiguration> {
 
@@ -72,14 +75,25 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
         environment.jersey().setUrlPattern("/*");
 
         final Morphia morphia = new Morphia();
+        morphia.mapPackage("com.rtv.store");
         Datastore store = morphia.createDatastore(mongoBundle.getClient(), mongoBundle.getDB().getName());
         store.ensureIndexes();
 
+        //Register DAO
+        OrderDAO.initOrderDAO(store);
+        ProductDAO.initProductDAO(store);
+        ThirdPartyDAO.initThirdPartyDAO(store);
+        BatchDAO.initBatchDAO(store);
+        UserDAO.initUserDAO(store);
+
+        // Register Resources
         OrderResource orderResource = new OrderResource(store, environment.getObjectMapper());
         environment.jersey().register(orderResource);
 
         UserResource userResource = new UserResource(store);
         environment.jersey().register(userResource);
+
+        // Register Filters
 
         final JwtConsumer consumer = new JwtConsumerBuilder()
             .setAllowedClockSkewInSeconds(30)
