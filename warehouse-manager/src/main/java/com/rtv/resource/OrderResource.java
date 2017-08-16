@@ -32,6 +32,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -92,7 +93,10 @@ public class OrderResource {
             orderDO.setProductID(productDO.getId());
         } else {
             //check if this id exists
-
+            Product p = ProductDAO.getProductByID(product.getId());
+            if (p == null) {
+                throw new BadRequestException("Product with id " + product.getId() + " does not exist");
+            }
             orderDO.setProductID(product.getId());
         }
 
@@ -109,7 +113,10 @@ public class OrderResource {
             orderDO.setBatchID(batchDO.getId());
         } else {
             //check if this id exists
-
+            Batch b = BatchDAO.getBatchByID(batch.getId());
+            if (b == null) {
+                throw new BadRequestException("Batch with id " + batch.getId() + " does not exist");
+            }
             orderDO.setBatchID(batch.getId());
         }
 
@@ -123,8 +130,11 @@ public class OrderResource {
             orderDO.setThirdPartyID(thirdPartyDO.getId());
         } else {
             //check if this exists
-
-            orderDO.setBatchID(batch.getId());
+            ThirdParty t = ThirdPartyDAO.getThirdPartyByID(thirdParty.getId());
+            if (t == null) {
+                throw new BadRequestException("Third party with id " + thirdParty.getId() + " does not exist");
+            }
+            orderDO.setThirdPartyID(thirdParty.getId());
         }
 
         orderDO.setPrice(order.getPrice());
@@ -140,8 +150,9 @@ public class OrderResource {
     @GET
     @ApiOperation(value = "Get orders by id")
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
     public @Valid
-    Order get(@NotNull @QueryParam("id") String id)
+    Order getByID(@PathParam("id") String id)
     {
         Query<OrderDO> query = store.createQuery(OrderDO.class);
         OrderDO orderDO = query.filter("id", id).get();
