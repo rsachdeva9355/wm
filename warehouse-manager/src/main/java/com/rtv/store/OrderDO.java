@@ -1,6 +1,7 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.Order;
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
@@ -8,7 +9,7 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
 
-import java.util.Date;
+import com.rtv.api.auth.Order;
 
 /**
  * Created by Tanvi on 09/08/17.
@@ -51,7 +52,7 @@ public class OrderDO extends PersistedEntity {
     private String thirdPartyID;
     private String productID;
     private String batchID;
-    private Float costPrice; //of individual product
+    private Float price; //of individual product
     private Float gst;
     private Float totalCost;
     private Integer quantity;
@@ -112,12 +113,12 @@ public class OrderDO extends PersistedEntity {
         this.batchID = batchID;
     }
 
-    public Float getCostPrice() {
-        return costPrice;
+    public Float getPrice() {
+        return price;
     }
 
-    public void setCostPrice(Float costPrice) {
-        this.costPrice = costPrice;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public Float getGst() {

@@ -1,5 +1,18 @@
 package com.rtv;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+
+import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.JwtContext;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.codahale.metrics.SharedMetricRegistries;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -7,8 +20,10 @@ import com.google.common.base.Optional;
 import com.meltmedia.dropwizard.mongo.MongoBundle;
 import com.rtv.api.auth.User;
 import com.rtv.auth.UserContext;
-import com.rtv.auth.filter.JwtAuthFilter;
+import com.rtv.auth.filter.JwtFilter;
+import com.rtv.auth.filter.NoAuthFilter;
 import com.rtv.config.WarehouseManagerConfiguration;
+import com.rtv.resource.AuthResource;
 import com.rtv.resource.OrderResource;
 import com.rtv.resource.UserResource;
 import com.rtv.store.BatchDAO;
@@ -16,29 +31,20 @@ import com.rtv.store.OrderDAO;
 import com.rtv.store.ProductDAO;
 import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.UserDAO;
+
 import io.dropwizard.Application;
-import io.dropwizard.auth.AuthDynamicFeature;
-import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.jwt.consumer.JwtContext;
-import org.jose4j.keys.HmacKey;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class WarehouseManager extends Application<WarehouseManagerConfiguration> {
 
     private static final Logger LOG = LoggerFactory.getLogger(WarehouseManager.class);
 
     private MongoBundle<WarehouseManagerConfiguration> mongoBundle;
+    private static String[] authenticatedUrls = {"/users*", "/orders*"};
 
     public static void main(String[] args) throws Exception {
         new WarehouseManager().run(args);
@@ -74,6 +80,17 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
     public void run(WarehouseManagerConfiguration configuration, Environment environment) throws Exception {
         environment.jersey().setUrlPattern("/*");
 
+        final FilterRegistration.Dynamic cors =
+            environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+        // Configure CORS parameters
+        cors.setInitParameter("allowedOrigins", "*");
+        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
+        cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+
+        // Add URL mapping
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
         final Morphia morphia = new Morphia();
         morphia.mapPackage("com.rtv.store");
         Datastore store = morphia.createDatastore(mongoBundle.getClient(), mongoBundle.getDB().getName());
@@ -90,26 +107,22 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
         OrderResource orderResource = new OrderResource(store, environment.getObjectMapper());
         environment.jersey().register(orderResource);
 
-        UserResource userResource = new UserResource(store);
+        UserResource userResource = new UserResource();
         environment.jersey().register(userResource);
 
-        // Register Filters
+        AuthResource authResource = new AuthResource();
+        environment.jersey().register(authResource);
 
-        final JwtConsumer consumer = new JwtConsumerBuilder()
-            .setAllowedClockSkewInSeconds(30)
-            .setRequireExpirationTime() // the JWT must have an expiration time
-            .setRequireSubject() // the JWT must have a subject claim
-            .setVerificationKey(new HmacKey(configuration.getSigningKey().getBytes()))
-            .setRelaxVerificationKeyValidation() // relaxes key length requirement
-            .build();
+        JwtFilter jwtFilter = new JwtFilter("kukky");
+        environment.servlets().addFilter("JwtFilter", jwtFilter)
+            .addMappingForUrlPatterns(
+                EnumSet.of(DispatcherType.REQUEST), true, authenticatedUrls
+            );
 
-        environment.jersey().register(new AuthDynamicFeature(
-            new JwtAuthFilter.Builder<User>()
-                .setCookieName("kukky")
-                .setJwtConsumer(consumer)
-                .setAuthenticator(new ExampleAuthenticator())
-                .buildAuthFilter()));
-        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+        environment.servlets().addFilter("NoAuthFilter", new NoAuthFilter())
+            .addMappingForUrlPatterns(
+                EnumSet.of(DispatcherType.REQUEST), true, authenticatedUrls
+            );
     }
 
     private static class ExampleAuthenticator implements Authenticator<JwtContext, User> {

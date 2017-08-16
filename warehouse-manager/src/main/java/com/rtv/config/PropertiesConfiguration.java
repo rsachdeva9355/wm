@@ -1,18 +1,20 @@
 package com.rtv.config;
 
-import com.meltmedia.dropwizard.mongo.MongoConfiguration;
-import com.rtv.WarehouseManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.meltmedia.dropwizard.mongo.MongoConfiguration;
+import com.rtv.WarehouseManager;
 
 /**
  * Startup configuration of nosql properties for WarehouseManager.

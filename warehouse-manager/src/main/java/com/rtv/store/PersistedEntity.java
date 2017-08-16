@@ -1,8 +1,8 @@
 package com.rtv.store;
 
-import org.mongodb.morphia.annotations.PrePersist;
-
 import java.util.Date;
+
+import org.mongodb.morphia.annotations.PrePersist;
 
 public class PersistedEntity {
 

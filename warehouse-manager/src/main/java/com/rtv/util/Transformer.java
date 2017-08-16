@@ -1,21 +1,22 @@
 package com.rtv.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Order;
 import com.rtv.api.auth.Product;
 import com.rtv.api.auth.ThirdParty;
 import com.rtv.api.auth.User;
 import com.rtv.store.BatchDAO;
-import com.rtv.store.ProductDAO;
-import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.BatchDO;
 import com.rtv.store.OrderDO;
+import com.rtv.store.ProductDAO;
 import com.rtv.store.ProductDO;
+import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.ThirdPartyDO;
+import com.rtv.store.UserDAO;
 import com.rtv.store.UserDO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Transformer {
 
@@ -119,13 +120,13 @@ public class Transformer {
         order.setProduct(ProductDAO.getProductByID(orderDO.getProductID()));
         order.setBatch(BatchDAO.getBatchByID(orderDO.getBatchID()));
         order.setThirdParty(ThirdPartyDAO.getThirdPartyByID(orderDO.getThirdPartyID()));
-        order.setCostPrice(orderDO.getCostPrice());
+        order.setPrice(orderDO.getPrice());
         order.setDate(orderDO.getDate());
         order.setGst(orderDO.getGst());
         order.setOrderType(orderDO.getOrderType());
         order.setQuantity(orderDO.getQuantity());
         order.setTotalCost(orderDO.getTotalCost());
-        order.setUserEmail(orderDO.getUserID());
+        order.setUserEmail(UserDAO.getUserByID(orderDO.getUserID()).getEmail());
         return order;
     }
 

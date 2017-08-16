@@ -1,12 +1,14 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
+
+import com.rtv.api.auth.User;
 
 @Entity(value = "user", noClassnameStored = true)
 @Indexes(
@@ -29,6 +31,7 @@ public class UserDO extends PersistedEntity {
         name = user.getName();
         email = user.getEmail();
         mobile = user.getMobile();
+        password = DigestUtils.md5Hex(mobile + "{" + email + "}");
     }
 
     @Id

@@ -1,7 +1,8 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.Batch;
 import org.mongodb.morphia.Datastore;
+
+import com.rtv.api.auth.Batch;
 
 import static com.rtv.util.Transformer.transform;
 

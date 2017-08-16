@@ -1,11 +1,12 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.Product;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.rtv.api.auth.Product;
 
 import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformProductDOs;

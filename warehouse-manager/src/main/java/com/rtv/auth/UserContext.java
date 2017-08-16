@@ -4,15 +4,17 @@ import com.rtv.api.auth.User;
 
 public class UserContext {
 
-    private static UserContext userContext = null;
+    private static ThreadLocal<UserContext> ctx= new ThreadLocal<>();
 
     private User user;
 
     private UserContext() {}
 
     public static UserContext current() {
-        if (null == userContext) {
+        UserContext userContext = ctx.get();
+        if (userContext == null) {
             userContext = new UserContext();
+            ctx.set(userContext);
         }
         return userContext;
     }

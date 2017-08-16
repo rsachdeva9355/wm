@@ -1,14 +1,16 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.Batch;
-import com.rtv.api.auth.Order;
-import com.rtv.api.auth.User;
+import java.util.Date;
+import java.util.List;
+
+import javax.ws.rs.NotFoundException;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 
-import javax.ws.rs.NotFoundException;
-import java.util.Date;
-import java.util.List;
+import com.rtv.api.auth.Batch;
+import com.rtv.api.auth.Order;
+import com.rtv.api.auth.User;
 
 import static com.rtv.util.Transformer.transformOrderDOs;
 

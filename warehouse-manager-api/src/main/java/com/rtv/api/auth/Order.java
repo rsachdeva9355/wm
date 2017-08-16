@@ -1,9 +1,10 @@
 package com.rtv.api.auth;
 
-import org.hibernate.validator.constraints.Email;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+
+import org.hibernate.validator.constraints.Email;
 
 /**
  * Created by Tanvi on 14/08/17.
@@ -35,7 +36,7 @@ public class Order {
     private Date date;
 
     @NotNull
-    private Float costPrice; //of individual product
+    private Float price; //of individual product
 
     @NotNull
     private Float gst;
@@ -94,12 +95,12 @@ public class Order {
         this.date = date;
     }
 
-    public Float getCostPrice() {
-        return costPrice;
+    public Float getPrice() {
+        return price;
     }
 
-    public void setCostPrice(Float costPrice) {
-        this.costPrice = costPrice;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public Float getGst() {

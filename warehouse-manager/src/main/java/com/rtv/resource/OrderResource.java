@@ -1,5 +1,28 @@
 package com.rtv.resource;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.commons.lang3.StringUtils;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Criteria;
+import org.mongodb.morphia.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Order;
@@ -14,30 +37,10 @@ import com.rtv.store.ProductDO;
 import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.ThirdPartyDO;
 import com.rtv.store.UserDAO;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Criteria;
-import org.mongodb.morphia.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static com.rtv.util.Transformer.transformOrderDOs;
 
@@ -45,8 +48,8 @@ import static com.rtv.util.Transformer.transformOrderDOs;
  * Created by Tanvi on 09/08/17.
  */
 
-@Path("order")
-@Api(value = "order")
+@Path("orders")
+@Api(value = "Order Management")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class OrderResource {
@@ -74,6 +77,11 @@ public class OrderResource {
                 )
     {
         OrderDO orderDO = new OrderDO();
+        User user = UserDAO.getUserByEmailOrMobile(order.getUserEmail());
+        if (null == user) {
+            throw new BadRequestException("User does not exist");
+        }
+        orderDO.setUserID(user.getId());
 
         Product product = order.getProduct();
         if (product.getId() == null) {
@@ -108,18 +116,19 @@ public class OrderResource {
             ThirdPartyDO thirdPartyDO = new ThirdPartyDO();
             thirdPartyDO.setName(thirdParty.getName());
             thirdPartyDO.setType(thirdParty.getType());
-            store.save(thirdParty);
+            store.save(thirdPartyDO);
             thirdParty.setId(thirdPartyDO.getId());
             orderDO.setThirdPartyID(thirdPartyDO.getId());
         } else {
             orderDO.setBatchID(batch.getId());
         }
 
-        orderDO.setCostPrice(order.getCostPrice());
+        orderDO.setPrice(order.getPrice());
         orderDO.setDate(new Date());
         orderDO.setGst(order.getGst());
         orderDO.setOrderType(order.getOrderType());
         orderDO.setQuantity(order.getQuantity());
+        orderDO.setTotalCost(order.getTotalCost());
         store.save(orderDO);
         return order;
     }

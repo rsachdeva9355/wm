@@ -1,7 +1,8 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.ThirdParty;
 import org.mongodb.morphia.Datastore;
+
+import com.rtv.api.auth.ThirdParty;
 
 import static com.rtv.util.Transformer.transform;
 
