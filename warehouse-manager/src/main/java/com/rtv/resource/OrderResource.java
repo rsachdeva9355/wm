@@ -1,28 +1,5 @@
 package com.rtv.resource;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang3.StringUtils;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Criteria;
-import org.mongodb.morphia.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Order;
@@ -37,11 +14,32 @@ import com.rtv.store.ProductDO;
 import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.ThirdPartyDO;
 import com.rtv.store.UserDAO;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Criteria;
+import org.mongodb.morphia.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformOrderDOs;
 
 /**
@@ -93,6 +91,8 @@ public class OrderResource {
             product.setId(productDO.getId());
             orderDO.setProductID(productDO.getId());
         } else {
+            //check if this id exists
+
             orderDO.setProductID(product.getId());
         }
 
@@ -108,6 +108,8 @@ public class OrderResource {
             batch.setId(batchDO.getId());
             orderDO.setBatchID(batchDO.getId());
         } else {
+            //check if this id exists
+
             orderDO.setBatchID(batch.getId());
         }
 
@@ -120,6 +122,8 @@ public class OrderResource {
             thirdParty.setId(thirdPartyDO.getId());
             orderDO.setThirdPartyID(thirdPartyDO.getId());
         } else {
+            //check if this exists
+
             orderDO.setBatchID(batch.getId());
         }
 
@@ -131,6 +135,17 @@ public class OrderResource {
         orderDO.setTotalCost(order.getTotalCost());
         store.save(orderDO);
         return order;
+    }
+
+    @GET
+    @ApiOperation(value = "Get orders by id")
+    @Produces(MediaType.APPLICATION_JSON)
+    public @Valid
+    Order get(@NotNull @QueryParam("id") String id)
+    {
+        Query<OrderDO> query = store.createQuery(OrderDO.class);
+        OrderDO orderDO = query.filter("id", id).get();
+        return transform(orderDO);
     }
 
     @GET
