@@ -169,7 +169,8 @@ public class OrderResource {
                     @QueryParam("enddate") Date endDate,
                     @QueryParam("thirdpartyname") String thirdPartyName,
                     @QueryParam("productname") String productName,
-                    @QueryParam("batchcode") String batchCode)
+                    @QueryParam("batchcode") String batchCode,
+                    @QueryParam("ordertype") Order.OrderType orderType)
     {
         Query<OrderDO> query = store.createQuery(OrderDO.class);
         List<Criteria> criterion = new ArrayList<>();
@@ -210,10 +211,12 @@ public class OrderResource {
                 criterion.add(query.criteria("batchID").equal(batch.getId()));
             }
         }
+        if (null != orderType) {
+            criterion.add(query.criteria("orderType").equal(orderType));
+        }
         if (criterion.size() > 0) {
             query.and(criterion.toArray(new Criteria[criterion.size()]));
         }
-
         return transformOrderDOs(query.asList());
     }
 
