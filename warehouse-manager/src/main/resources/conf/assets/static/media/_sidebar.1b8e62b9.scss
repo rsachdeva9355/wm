@@ -1,0 +1,39 @@
+@import '../../assets/styles/variables';
+
+.sidebar-container {
+    background-color: #484848;
+    color: white;
+    height: $sidebar-height;
+    width: 50px;
+    float: left;
+    .sidebar-icon {
+        width: 100%;
+        text-align: center;
+        height: 50px;
+        color: inherit;
+        display: block;
+        text-decoration: none;
+        border-bottom: 1px solid #6b6767;
+        &.selected {
+            i {
+                color: #FFC107;
+            }
+        }
+        &:last-of-type {
+            border-bottom: none;
+        }
+        i {
+            font-size: 22px;
+            line-height: 48px;
+        }
+        &:hover {
+            background-color: #515151;
+            cursor: pointer;
+            i {
+                color: #FFC107;
+            }
+        }
+    }
+}
+
+

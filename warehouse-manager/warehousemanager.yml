@@ -2,10 +2,10 @@ swagger:
   resourcePackage: com.rtv.
 
 server:
-  rootPath: '/*'
+  rootPath: '/wm/'
   applicationConnectors:
     - type: http
-      port: 9010
+      port: 80
   adminConnectors:
     - type: http
       port: 9011

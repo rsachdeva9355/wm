@@ -34,8 +34,8 @@ public class JwtFilter implements Filter {
 
     public static final Set<String> byPassedUrls = new HashSet<>();
     static {
-        byPassedUrls.add("/authenticate");
-        byPassedUrls.add("/swagger");
+        byPassedUrls.add("/wm/authenticate");
+        byPassedUrls.add("/wm/swagger");
     }
 
     public JwtFilter(@NotBlank String jwtTokenKey) {

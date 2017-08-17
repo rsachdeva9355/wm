@@ -33,6 +33,7 @@ import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.UserDAO;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -44,7 +45,6 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
     private static final Logger LOG = LoggerFactory.getLogger(WarehouseManager.class);
 
     private MongoBundle<WarehouseManagerConfiguration> mongoBundle;
-    private static String[] authenticatedUrls = {"/users/*", "/orders*"};
 
     public static void main(String[] args) throws Exception {
         new WarehouseManager().run(args);
@@ -62,6 +62,8 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
         ObjectMapper mapper = bootstrap.getObjectMapper();
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+        bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
+
         bootstrap.addBundle(new SwaggerBundle<WarehouseManagerConfiguration>() {
             @Override
             protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(
@@ -78,7 +80,7 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
 
     @Override
     public void run(WarehouseManagerConfiguration configuration, Environment environment) throws Exception {
-        environment.jersey().setUrlPattern("/*");
+        environment.jersey().setUrlPattern("/wm/*");
 
         final FilterRegistration.Dynamic cors =
             environment.servlets().addFilter("CORS", CrossOriginFilter.class);
@@ -89,7 +91,7 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
         cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
 
         // Add URL mapping
-        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/wm/*");
 
         final Morphia morphia = new Morphia();
         morphia.mapPackage("com.rtv.store");
@@ -116,12 +118,12 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
         JwtFilter jwtFilter = new JwtFilter("kukky");
         environment.servlets().addFilter("JwtFilter", jwtFilter)
             .addMappingForUrlPatterns(
-                EnumSet.of(DispatcherType.REQUEST), true, "/*"
+                EnumSet.of(DispatcherType.REQUEST), true, "/wm/*"
             );
 
         environment.servlets().addFilter("NoAuthFilter", new NoAuthFilter())
             .addMappingForUrlPatterns(
-                EnumSet.of(DispatcherType.REQUEST), true, "/*"
+                EnumSet.of(DispatcherType.REQUEST), true, "/wm/*"
             );
     }
 
