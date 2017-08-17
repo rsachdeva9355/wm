@@ -78,7 +78,7 @@ public class OrderResource {
         OrderDO orderDO = new OrderDO();
         User user = UserDAO.getUserByEmailOrMobile(order.getUserEmail());
         if (null == user) {
-            throw new BadRequestException("User does not exist");
+            throw new BadRequestException("User does not exist for username " + order.getUserEmail());
         }
         orderDO.setUserID(user.getId());
 
@@ -95,7 +95,7 @@ public class OrderResource {
             //check if this id exists
             Product p = ProductDAO.getProductByID(product.getId());
             if (p == null) {
-                throw new BadRequestException("Product with id " + product.getId() + " does not exist");
+                throw new BadRequestException("Product with id {" + product.getId() + "} does not exist");
             }
             orderDO.setProductID(product.getId());
         }
@@ -115,7 +115,7 @@ public class OrderResource {
             //check if this id exists
             Batch b = BatchDAO.getBatchByID(batch.getId());
             if (b == null) {
-                throw new BadRequestException("Batch with id " + batch.getId() + " does not exist");
+                throw new BadRequestException("Batch with id {" + batch.getId() + "} does not exist");
             }
             orderDO.setBatchID(batch.getId());
         }
@@ -132,7 +132,7 @@ public class OrderResource {
             //check if this exists
             ThirdParty t = ThirdPartyDAO.getThirdPartyByID(thirdParty.getId());
             if (t == null) {
-                throw new BadRequestException("Third party with id " + thirdParty.getId() + " does not exist");
+                throw new BadRequestException("Third party with id {" + thirdParty.getId() + "} does not exist");
             }
             orderDO.setThirdPartyID(thirdParty.getId());
         }
