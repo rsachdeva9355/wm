@@ -1,10 +1,9 @@
 package com.rtv.api.auth;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
+import java.util.Date;
 
 /**
  * Created by Tanvi on 14/08/17.
@@ -18,13 +17,13 @@ public class Order {
 
     private String id;
 
-    @NotNull
+    private String productID;
     private Product product;
 
-    @NotNull
+    private String thirdPartyID;
     private ThirdParty thirdParty;
 
-    @NotNull
+    private String batchID;
     private Batch batch;
 
     @NotNull
@@ -57,6 +56,14 @@ public class Order {
         this.id = id;
     }
 
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -65,12 +72,28 @@ public class Order {
         this.product = product;
     }
 
+    public String getThirdPartyID() {
+        return thirdPartyID;
+    }
+
+    public void setThirdPartyID(String thirdPartyID) {
+        this.thirdPartyID = thirdPartyID;
+    }
+
     public ThirdParty getThirdParty() {
         return thirdParty;
     }
 
     public void setThirdParty(ThirdParty thirdParty) {
         this.thirdParty = thirdParty;
+    }
+
+    public String getBatchID() {
+        return batchID;
+    }
+
+    public void setBatchID(String batchID) {
+        this.batchID = batchID;
     }
 
     public Batch getBatch() {

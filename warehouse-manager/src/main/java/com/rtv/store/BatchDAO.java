@@ -1,8 +1,8 @@
 package com.rtv.store;
 
-import org.mongodb.morphia.Datastore;
-
 import com.rtv.api.auth.Batch;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Query;
 
 import static com.rtv.util.Transformer.transform;
 
@@ -18,13 +18,29 @@ public class BatchDAO {
     }
 
     public static Batch getBatchByID(String batchID) {
-        BatchDO batchDO = store.createQuery(BatchDO.class).field("id").equal(batchID).get();
-        return transform(batchDO);
+        return transform(queryBatchByID(batchID));
+    }
+
+    public static BatchDO getBatchDOByID(String batchID) {
+        return queryBatchByID(batchID);
+    }
+
+    private static BatchDO queryBatchByID(String batchID) {
+        Query<BatchDO> query = store.createQuery(BatchDO.class).field("id").equal(batchID);
+        return query.get();
     }
 
     public static Batch getBatchByCode(String batchCode) {
-        BatchDO batchDO = store.createQuery(BatchDO.class).field("code").equal(batchCode).get();
-        return transform(batchDO);
+        return transform(queryBatchByCode(batchCode));
+    }
+
+    public static BatchDO getBatchDOByCode(String batchCode) {
+        return queryBatchByCode(batchCode);
+    }
+
+    private static BatchDO queryBatchByCode(String batchCode) {
+        Query<BatchDO> query = store.createQuery(BatchDO.class).field("code").equal(batchCode);
+        return query.get();
     }
 
 }

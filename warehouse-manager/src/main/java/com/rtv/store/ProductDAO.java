@@ -1,12 +1,11 @@
 package com.rtv.store;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.rtv.api.auth.Product;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 
-import com.rtv.api.auth.Product;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformProductDOs;
@@ -23,8 +22,16 @@ public class ProductDAO {
     }
 
     public static Product getProductByID(String productID) {
-        ProductDO productDO = store.createQuery(ProductDO.class).field("id").equal(productID).get();
-        return transform(productDO);
+        return transform(queryProductByID(productID));
+    }
+
+    public static ProductDO getProductDOByID(String productID) {
+        return queryProductByID(productID);
+    }
+
+    private static ProductDO queryProductByID(String productID) {
+        Query<ProductDO> query = store.createQuery(ProductDO.class).field("id").equal(productID);
+        return query.get();
     }
 
     /**

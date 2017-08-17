@@ -83,7 +83,20 @@ public class OrderResource {
         orderDO.setUserID(user.getId());
 
         Product product = order.getProduct();
-        if (product.getId() == null) {
+        if (null == product) {
+            //this should have a product id
+            String productID = order.getProductID();
+            if (null == productID) {
+                throw new BadRequestException("No product or product id");
+            }
+            //check if this id exists
+            ProductDO p = ProductDAO.getProductDOByID(productID);
+            if (null == p) {
+                throw new BadRequestException("Product with id {" + productID + "} does not exist");
+            }
+            orderDO.setProductID(productID);
+            product = transform(p);
+        } else {
             ProductDO productDO = new ProductDO();
             productDO.setCompany(product.getCompany());
             productDO.setCompanyProductName(product.getCompanyProductName());
@@ -91,17 +104,23 @@ public class OrderResource {
             store.save(productDO);
             product.setId(productDO.getId());
             orderDO.setProductID(productDO.getId());
-        } else {
-            //check if this id exists
-            Product p = ProductDAO.getProductByID(product.getId());
-            if (p == null) {
-                throw new BadRequestException("Product with id {" + product.getId() + "} does not exist");
-            }
-            orderDO.setProductID(product.getId());
         }
 
         Batch batch = order.getBatch();
-        if (batch.getId() == null) {
+        if (null == batch) {
+            //this should have a batch id
+            String batchID = order.getBatchID();
+            if (null == batchID) {
+                throw new BadRequestException("No batch or batch id");
+            }
+            //check if this id exists
+            BatchDO b = BatchDAO.getBatchDOByID(batchID);
+            if (null == b) {
+                throw new BadRequestException("Batch with id {" + batchID + "} does not exist");
+            }
+            orderDO.setBatchID(batchID);
+            //batch = transform(b); - not needed
+        } else {
             BatchDO batchDO = new BatchDO();
             batchDO.setProductID(product.getId());
             batchDO.setCode(batch.getCode());
@@ -111,30 +130,29 @@ public class OrderResource {
             store.save(batchDO);
             batch.setId(batchDO.getId());
             orderDO.setBatchID(batchDO.getId());
-        } else {
-            //check if this id exists
-            Batch b = BatchDAO.getBatchByID(batch.getId());
-            if (b == null) {
-                throw new BadRequestException("Batch with id {" + batch.getId() + "} does not exist");
-            }
-            orderDO.setBatchID(batch.getId());
         }
 
         ThirdParty thirdParty = order.getThirdParty();
-        if (thirdParty.getId() == null) {
+        if (null == thirdParty) {
+            //this should have a thirdpartyID
+            String thirdPartyID = order.getThirdPartyID();
+            if (null == thirdPartyID) {
+                throw new BadRequestException("No third party or third party id");
+            }
+            //check if this id exists
+            ThirdPartyDO tp = ThirdPartyDAO.getThirdPartyDOByID(thirdPartyID);
+            if (null == tp) {
+                throw new BadRequestException("Third Party with id {" + thirdPartyID  + "} does not exist");
+            }
+            orderDO.setThirdPartyID(thirdPartyID);
+            //thirdParty = transform(tp); - not needed
+        } else {
             ThirdPartyDO thirdPartyDO = new ThirdPartyDO();
             thirdPartyDO.setName(thirdParty.getName());
             thirdPartyDO.setType(thirdParty.getType());
             store.save(thirdPartyDO);
             thirdParty.setId(thirdPartyDO.getId());
             orderDO.setThirdPartyID(thirdPartyDO.getId());
-        } else {
-            //check if this exists
-            ThirdParty t = ThirdPartyDAO.getThirdPartyByID(thirdParty.getId());
-            if (t == null) {
-                throw new BadRequestException("Third party with id {" + thirdParty.getId() + "} does not exist");
-            }
-            orderDO.setThirdPartyID(thirdParty.getId());
         }
 
         orderDO.setPrice(order.getPrice());
