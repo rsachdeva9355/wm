@@ -1,9 +1,5 @@
 package com.rtv.api.auth;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.validation.constraints.NotNull;
-
 /**
  * Created by Tanvi on 15/08/17.
  */
@@ -16,10 +12,8 @@ public class ThirdParty {
 
     private String id;
 
-    @NotBlank
     private String name;
 
-    @NotNull
     private ThirdPartyType type;
 
     public String getId() {
