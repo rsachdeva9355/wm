@@ -117,6 +117,7 @@ public class Transformer {
             return null;
         }
         Order order = new Order();
+        order.setId(orderDO.getId());
         order.setProduct(ProductDAO.getProductByID(orderDO.getProductID()));
         order.setBatch(BatchDAO.getBatchByID(orderDO.getBatchID()));
         order.setThirdParty(ThirdPartyDAO.getThirdPartyByID(orderDO.getThirdPartyID()));

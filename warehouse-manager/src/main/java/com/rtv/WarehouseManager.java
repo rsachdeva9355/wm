@@ -44,7 +44,7 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
     private static final Logger LOG = LoggerFactory.getLogger(WarehouseManager.class);
 
     private MongoBundle<WarehouseManagerConfiguration> mongoBundle;
-    private static String[] authenticatedUrls = {"/users*", "/orders*"};
+    private static String[] authenticatedUrls = {"/users/*", "/orders*"};
 
     public static void main(String[] args) throws Exception {
         new WarehouseManager().run(args);
@@ -116,12 +116,12 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
         JwtFilter jwtFilter = new JwtFilter("kukky");
         environment.servlets().addFilter("JwtFilter", jwtFilter)
             .addMappingForUrlPatterns(
-                EnumSet.of(DispatcherType.REQUEST), true, authenticatedUrls
+                EnumSet.of(DispatcherType.REQUEST), true, "/*"
             );
 
         environment.servlets().addFilter("NoAuthFilter", new NoAuthFilter())
             .addMappingForUrlPatterns(
-                EnumSet.of(DispatcherType.REQUEST), true, authenticatedUrls
+                EnumSet.of(DispatcherType.REQUEST), true, "/*"
             );
     }
 

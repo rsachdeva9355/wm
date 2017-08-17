@@ -1,6 +1,8 @@
 package com.rtv.auth.filter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -30,6 +32,11 @@ public class JwtFilter implements Filter {
 
     private final String jwtTokenKey;
 
+    public static final Set<String> byPassedUrls = new HashSet<>();
+    static {
+        byPassedUrls.add("/authenticate");
+    }
+
     public JwtFilter(@NotBlank String jwtTokenKey) {
         this.jwtTokenKey = jwtTokenKey;
     }
@@ -43,20 +50,31 @@ public class JwtFilter implements Filter {
         throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
-            String jwtToken = getTokenFromCookie(servletRequest);
-            if (StringUtils.isNotBlank(jwtToken)) {
-                Jws<Claims> claimsJws;
-                try {
-                    claimsJws = JwtHelper.verifyAndDecode(jwtToken);
-                    updateUserContext(claimsJws);
-                } catch (JwtException e) {
-                    log.debug("Invalid Token Received");
+            if (!isByPassed(servletRequest.getRequestURI())) {
+                String jwtToken = getTokenFromCookie(servletRequest);
+                if (StringUtils.isNotBlank(jwtToken)) {
+                    Jws<Claims> claimsJws;
+                    try {
+                        claimsJws = JwtHelper.verifyAndDecode(jwtToken);
+                        updateUserContext(claimsJws);
+                    } catch (JwtException e) {
+                        log.debug("Invalid Token Received");
+                    }
+                } else {
+                    UserContext.current().setUser(null);
                 }
-            } else {
-                UserContext.current().setUser(null);
             }
         }
         chain.doFilter(request, response);
+    }
+
+    public static boolean isByPassed(String requestURI) {
+        for (String url :  byPassedUrls) {
+            if (requestURI.startsWith(url)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getTokenFromCookie(HttpServletRequest servletRequest) {
