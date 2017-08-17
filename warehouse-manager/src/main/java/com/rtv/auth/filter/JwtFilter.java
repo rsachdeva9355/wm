@@ -35,6 +35,7 @@ public class JwtFilter implements Filter {
     public static final Set<String> byPassedUrls = new HashSet<>();
     static {
         byPassedUrls.add("/authenticate");
+        byPassedUrls.add("/swagger");
     }
 
     public JwtFilter(@NotBlank String jwtTokenKey) {
@@ -50,7 +51,7 @@ public class JwtFilter implements Filter {
         throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
-            if (!isByPassed(servletRequest.getRequestURI())) {
+            if (!isByPassed(servletRequest)) {
                 String jwtToken = getTokenFromCookie(servletRequest);
                 if (StringUtils.isNotBlank(jwtToken)) {
                     Jws<Claims> claimsJws;
@@ -68,13 +69,13 @@ public class JwtFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    public static boolean isByPassed(String requestURI) {
+    public static boolean isByPassed(HttpServletRequest request) {
         for (String url :  byPassedUrls) {
-            if (requestURI.startsWith(url)) {
+            if (request.getRequestURI().startsWith(url)) {
                 return true;
             }
         }
-        return false;
+        return "OPTIONS".equals(request.getMethod());
     }
 
     private String getTokenFromCookie(HttpServletRequest servletRequest) {

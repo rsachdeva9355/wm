@@ -24,7 +24,7 @@ public class NoAuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
-        if (!JwtFilter.isByPassed(((HttpServletRequest) request).getRequestURI())) {
+        if (!JwtFilter.isByPassed(((HttpServletRequest) request))) {
             if (null == UserContext.current().getUser()) {
                 if (response instanceof HttpServletResponse) {
                     HttpServletResponse servletResponse = (HttpServletResponse) response;

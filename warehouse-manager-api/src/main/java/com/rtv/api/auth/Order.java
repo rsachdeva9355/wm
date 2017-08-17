@@ -16,6 +16,8 @@ public class Order {
         PURCHASE
     }
 
+    private String id;
+
     @NotNull
     private Product product;
 
@@ -46,6 +48,14 @@ public class Order {
 
     @NotNull
     private Integer quantity;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Product getProduct() {
         return product;
