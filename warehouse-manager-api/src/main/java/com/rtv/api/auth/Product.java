@@ -10,7 +10,7 @@ public class Product {
     private String id;
 
     @NotBlank
-    private String companyProductName;
+    private String genericName;
 
     @NotBlank
     private String company;
@@ -26,12 +26,12 @@ public class Product {
         this.id = id;
     }
 
-    public String getCompanyProductName() {
-        return companyProductName;
+    public String getGenericName() {
+        return genericName;
     }
 
-    public void setCompanyProductName(String companyProductName) {
-        this.companyProductName = companyProductName;
+    public void setGenericName(String genericName) {
+        this.genericName = genericName;
     }
 
     public String getCompany() {

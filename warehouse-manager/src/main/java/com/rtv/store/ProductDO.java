@@ -20,14 +20,14 @@ import org.mongodb.morphia.annotations.Indexes;
         ),
         @Index(
                 fields = {
-                        @Field("companyProductName")
+                        @Field("genericName")
                 }
         )
 })
 public class ProductDO extends PersistedEntity {
     @Id
     private String id;
-    private String companyProductName;
+    private String genericName;
     private String company;
     private String name;
 
@@ -39,12 +39,12 @@ public class ProductDO extends PersistedEntity {
         return id;
     }
 
-    public String getCompanyProductName() {
-        return companyProductName;
+    public String getGenericName() {
+        return genericName;
     }
 
-    public void setCompanyProductName(String companyProductName) {
-        this.companyProductName = companyProductName;
+    public void setGenericName(String genericName) {
+        this.genericName = genericName;
     }
 
     public String getCompany() {

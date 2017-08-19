@@ -99,7 +99,7 @@ public class OrderResource {
         } else {
             ProductDO productDO = new ProductDO();
             productDO.setCompany(product.getCompany());
-            productDO.setCompanyProductName(product.getCompanyProductName());
+            productDO.setGenericName(product.getGenericName());
             productDO.setName(product.getName());
             store.save(productDO);
             product.setId(productDO.getId());
