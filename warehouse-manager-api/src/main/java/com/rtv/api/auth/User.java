@@ -21,6 +21,9 @@ public class User implements Principal {
     @Length(min = 10, max = 10, message = "Please enter a valid 10 digit mobile number")
     private String mobile;
 
+    @NotBlank
+    private String username;
+
     public User() {
     }
 
@@ -55,5 +58,13 @@ public class User implements Principal {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

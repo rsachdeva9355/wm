@@ -11,15 +11,21 @@ import org.mongodb.morphia.annotations.Indexes;
 import com.rtv.api.auth.User;
 
 @Entity(value = "user", noClassnameStored = true)
-@Indexes(
-    @Index(
-        fields = {
-            @Field("email"),
-            @Field("mobile")
-        },
-        unique = true
-    )
-)
+@Indexes({
+        @Index(
+                fields = {
+                        @Field("email"),
+                        @Field("mobile")
+                },
+                unique = true
+        ),
+        @Index(
+                fields = {
+                        @Field("username")
+                },
+                unique = true
+        )
+})
 public class UserDO extends PersistedEntity {
 
     public UserDO() {
@@ -40,6 +46,7 @@ public class UserDO extends PersistedEntity {
     private String email;
     private String mobile;
     private String password;
+    private String username;
 
     public String getId() {
         return id;
@@ -75,5 +82,13 @@ public class UserDO extends PersistedEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

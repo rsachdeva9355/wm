@@ -1,6 +1,17 @@
 package com.rtv.resource;
 
 
+import com.mongodb.DuplicateKeyException;
+import com.rtv.api.auth.User;
+import com.rtv.auth.UserContext;
+import com.rtv.store.UserDAO;
+import com.rtv.store.UserDO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.validation.Valid;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
@@ -11,19 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mongodb.DuplicateKeyException;
-import com.rtv.api.auth.User;
-import com.rtv.auth.UserContext;
-import com.rtv.store.UserDAO;
-import com.rtv.store.UserDO;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 import static java.text.MessageFormat.format;
 import static javax.ws.rs.core.Response.Status.CONFLICT;
@@ -59,8 +57,8 @@ public class UserResource {
 
     @GET
     @ApiOperation("Get existing user")
-    public @Valid User get(@NotBlank @QueryParam("username") String emailOrMobile) {
-        User user = UserDAO.getUserByEmailOrMobile(emailOrMobile);
+    public @Valid User get(@NotBlank @QueryParam("username") String username) {
+        User user = UserDAO.getUserByUsername(username);
         if (null == user) {
             throw new NotFoundException("User does not exist. Invalid username");
         }

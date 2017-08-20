@@ -1,5 +1,14 @@
 package com.rtv.resource;
 
+import com.rtv.api.auth.User;
+import com.rtv.auth.JwtHelper;
+import com.rtv.store.UserDAO;
+import com.rtv.store.UserDO;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -7,16 +16,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.rtv.api.auth.User;
-import com.rtv.auth.JwtHelper;
-import com.rtv.store.UserDAO;
-import com.rtv.store.UserDO;
 
 import static com.rtv.auth.JwtHelper.TOKEN_EXPIRY_HOURS;
 import static com.rtv.util.Transformer.transform;
@@ -37,7 +36,7 @@ public class AuthResource {
         @FormParam("username") @NotBlank String username,
         @FormParam("password") @NotBlank String password)
     {
-        UserDO userDO = UserDAO.getUserDOByEmailOrMobile(username);
+        UserDO userDO = UserDAO.getUserDOByUsername(username);
         if (null != userDO) {
             String md5Password = DigestUtils.md5Hex(password + "{" + userDO.getEmail() + "}");
             if (!userDO.getPassword().equals(md5Password)) {

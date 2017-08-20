@@ -1,7 +1,5 @@
 package com.rtv.store;
 
-import java.util.Date;
-
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
@@ -9,29 +7,12 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
 
-import com.rtv.api.auth.Order;
-
 /**
  * Created by Tanvi on 09/08/17.
  */
 
 @Entity(value = "order", noClassnameStored = true)
 @Indexes({
-        @Index(
-                fields = {
-                        @Field("orderType")
-                }
-        ),
-        @Index(
-                fields = {
-                        @Field("userID")
-                }
-        ),
-        @Index(
-                fields = {
-                        @Field("thirdPartyID")
-                }
-        ),
         @Index(
                 fields = {
                         @Field("productID")
@@ -46,10 +27,6 @@ import com.rtv.api.auth.Order;
 public class OrderDO extends PersistedEntity {
     @Id
     private String id;
-    private Order.OrderType orderType;
-    private String userID;
-    private Date date;
-    private String thirdPartyID;
     private String productID;
     private String batchID;
     private Float price; //of individual product
@@ -63,38 +40,6 @@ public class OrderDO extends PersistedEntity {
 
     public String getId() {
         return id;
-    }
-
-    public Order.OrderType getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(Order.OrderType orderType) {
-        this.orderType = orderType;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getThirdPartyID() {
-        return thirdPartyID;
-    }
-
-    public void setThirdPartyID(String thirdPartyID) {
-        this.thirdPartyID = thirdPartyID;
     }
 
     public String getProductID() {

@@ -4,15 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Order;
 import com.rtv.api.auth.Product;
-import com.rtv.api.auth.ThirdParty;
 import com.rtv.api.auth.User;
 import com.rtv.store.BatchDAO;
 import com.rtv.store.BatchDO;
+import com.rtv.store.OrderDAO;
 import com.rtv.store.OrderDO;
 import com.rtv.store.ProductDAO;
 import com.rtv.store.ProductDO;
-import com.rtv.store.ThirdPartyDAO;
-import com.rtv.store.ThirdPartyDO;
 import com.rtv.store.UserDAO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +35,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.rtv.util.Transformer.transform;
@@ -76,11 +73,11 @@ public class OrderResource {
                 )
     {
         OrderDO orderDO = new OrderDO();
-        User user = UserDAO.getUserByEmailOrMobile(order.getUserEmail());
-        if (null == user) {
-            throw new BadRequestException("User does not exist for username " + order.getUserEmail());
-        }
-        orderDO.setUserID(user.getId());
+//        User user = UserDAO.getUserByUsername(order.getUsername());
+//        if (null == user) {
+//            throw new BadRequestException("User does not exist for username " + order.getUsername());
+//        }
+//        orderDO.setUserID(user.getId());
 
         Product product = order.getProduct();
         if (null == product) {
@@ -132,33 +129,8 @@ public class OrderResource {
             orderDO.setBatchID(batchDO.getId());
         }
 
-        ThirdParty thirdParty = order.getThirdParty();
-        if (null == thirdParty) {
-            //this should have a thirdpartyID
-            String thirdPartyID = order.getThirdPartyID();
-            if (null == thirdPartyID) {
-                throw new BadRequestException("No third party or third party id");
-            }
-            //check if this id exists
-            ThirdPartyDO tp = ThirdPartyDAO.getThirdPartyDOByID(thirdPartyID);
-            if (null == tp) {
-                throw new BadRequestException("Third Party with id {" + thirdPartyID  + "} does not exist");
-            }
-            orderDO.setThirdPartyID(thirdPartyID);
-            //thirdParty = transform(tp); - not needed
-        } else {
-            ThirdPartyDO thirdPartyDO = new ThirdPartyDO();
-            thirdPartyDO.setName(thirdParty.getName());
-            thirdPartyDO.setType(thirdParty.getType());
-            store.save(thirdPartyDO);
-            thirdParty.setId(thirdPartyDO.getId());
-            orderDO.setThirdPartyID(thirdPartyDO.getId());
-        }
-
         orderDO.setPrice(order.getPrice());
-        orderDO.setDate(new Date());
         orderDO.setGst(order.getGst());
-        orderDO.setOrderType(order.getOrderType());
         orderDO.setQuantity(order.getQuantity());
         orderDO.setTotalCost(order.getTotalCost());
         store.save(orderDO);
@@ -172,9 +144,7 @@ public class OrderResource {
     public @Valid
     Order getByID(@PathParam("id") String id)
     {
-        Query<OrderDO> query = store.createQuery(OrderDO.class);
-        OrderDO orderDO = query.filter("id", id).get();
-        return transform(orderDO);
+        return OrderDAO.getOrderByID(id);
     }
 
     @GET
@@ -182,41 +152,41 @@ public class OrderResource {
     @Produces(MediaType.APPLICATION_JSON)
     public @Valid
     List<Order> get(@QueryParam("username") String username,
-                    @QueryParam("exactdate") Date exactDate,
-                    @QueryParam("startdate") Date startDate,
-                    @QueryParam("enddate") Date endDate,
-                    @QueryParam("thirdpartyname") String thirdPartyName,
+//                    @QueryParam("exactdate") Date exactDate,
+//                    @QueryParam("startdate") Date startDate,
+//                    @QueryParam("enddate") Date endDate,
+//                    @QueryParam("thirdpartyname") String thirdPartyName,
                     @QueryParam("productname") String productName,
-                    @QueryParam("batchcode") String batchCode,
-                    @QueryParam("ordertype") Order.OrderType orderType)
+                    @QueryParam("batchcode") String batchCode)
+//                    @QueryParam("ordertype") Order.OrderType orderType)
     {
         Query<OrderDO> query = store.createQuery(OrderDO.class);
         List<Criteria> criterion = new ArrayList<>();
         if (StringUtils.isNotBlank(username)) {
-            User user = UserDAO.getUserByEmailOrMobile(username);
+            User user = UserDAO.getUserByUsername(username);
             if (null == user) {
-                throw new NotFoundException("User does not exist for emailorMobile " + username);
+                throw new NotFoundException("User does not exist for username " + username);
             }
             criterion.add(query.criteria("userID").equal(user.getId()));
         }
-        if (exactDate != null) {
-            criterion.add(query.criteria("date").equal(exactDate));
-            if (startDate != null || endDate != null) {
-                throw new BadRequestException("Cannot send start/end date with exact date");
-            }
-        }
-        if (startDate != null) {
-            criterion.add(query.criteria("date").greaterThan(startDate));
-        }
-        if (endDate != null) {
-            criterion.add(query.criteria("date").lessThan(endDate));
-        }
-        if (StringUtils.isNotBlank(thirdPartyName)) {
-            ThirdParty thirdParty = ThirdPartyDAO.getThirdPartyByName(thirdPartyName);
-            if (thirdParty != null) {
-                criterion.add(query.criteria("thirdPartyID").equal(thirdParty.getId()));
-            }
-        }
+//        if (exactDate != null) {
+//            criterion.add(query.criteria("date").equal(exactDate));
+//            if (startDate != null || endDate != null) {
+//                throw new BadRequestException("Cannot send start/end date with exact date");
+//            }
+//        }
+//        if (startDate != null) {
+//            criterion.add(query.criteria("date").greaterThan(startDate));
+//        }
+//        if (endDate != null) {
+//            criterion.add(query.criteria("date").lessThan(endDate));
+//        }
+//        if (StringUtils.isNotBlank(thirdPartyName)) {
+//            ThirdParty thirdParty = ThirdPartyDAO.getThirdPartyByName(thirdPartyName);
+//            if (thirdParty != null) {
+//                criterion.add(query.criteria("thirdPartyID").equal(thirdParty.getId()));
+//            }
+//        }
         if (StringUtils.isNotBlank(productName)) {
             List<String> productIDs = ProductDAO.getProductIDsForName(productName);
             if (productIDs != null && productIDs.size() > 0) {
@@ -229,9 +199,9 @@ public class OrderResource {
                 criterion.add(query.criteria("batchID").equal(batch.getId()));
             }
         }
-        if (null != orderType) {
-            criterion.add(query.criteria("orderType").equal(orderType));
-        }
+//        if (null != orderType) {
+//            criterion.add(query.criteria("orderType").equal(orderType));
+//        }
         if (criterion.size() > 0) {
             query.and(criterion.toArray(new Criteria[criterion.size()]));
         }

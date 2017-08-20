@@ -1,40 +1,19 @@
 package com.rtv.api.auth;
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * Created by Tanvi on 14/08/17.
  */
 public class Order {
 
-    public enum OrderType {
-        SALE,
-        PURCHASE
-    }
-
     private String id;
 
     private String productID;
     private Product product;
 
-    private String thirdPartyID;
-    private ThirdParty thirdParty;
-
     private String batchID;
     private Batch batch;
-
-    @NotNull
-    private OrderType orderType;
-
-    @NotNull
-    @Email
-    private String userEmail;
-
-    @NotNull
-    private Date date;
 
     @NotNull
     private Float price; //of individual product
@@ -72,22 +51,6 @@ public class Order {
         this.product = product;
     }
 
-    public String getThirdPartyID() {
-        return thirdPartyID;
-    }
-
-    public void setThirdPartyID(String thirdPartyID) {
-        this.thirdPartyID = thirdPartyID;
-    }
-
-    public ThirdParty getThirdParty() {
-        return thirdParty;
-    }
-
-    public void setThirdParty(ThirdParty thirdParty) {
-        this.thirdParty = thirdParty;
-    }
-
     public String getBatchID() {
         return batchID;
     }
@@ -102,30 +65,6 @@ public class Order {
 
     public void setBatch(Batch batch) {
         this.batch = batch;
-    }
-
-    public OrderType getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(OrderType orderType) {
-        this.orderType = orderType;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public Float getPrice() {

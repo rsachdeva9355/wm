@@ -1,17 +1,13 @@
 package com.rtv.store;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.ws.rs.NotFoundException;
-
+import com.rtv.api.auth.Batch;
+import com.rtv.api.auth.Order;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 
-import com.rtv.api.auth.Batch;
-import com.rtv.api.auth.Order;
-import com.rtv.api.auth.User;
+import java.util.List;
 
+import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformOrderDOs;
 
 /**
@@ -26,32 +22,45 @@ public class OrderDAO {
         store = stor;
     }
 
+    public static Order getOrderByID(String orderID) {
+        return transform(queryOrderByID(orderID));
+    }
+
+    public static OrderDO getOrderDOByID(String orderID) {
+        return queryOrderByID(orderID);
+    }
+
+    private static OrderDO queryOrderByID(String orderID) {
+        Query<OrderDO> query = store.createQuery(OrderDO.class);
+        return query.field("id").equal(orderID).get();
+    }
+
     public static List<Order> getOrdersByUserID(String userID) {
         List<OrderDO> orderDOs = store.createQuery(OrderDO.class).field("userID").equal(userID).asList();
         return transformOrderDOs(orderDOs);
     }
 
-    public static List<Order> getOrdersByEmailOrMobile(String emailOrMobile) throws NotFoundException {
-        User user = UserDAO.getUserByEmailOrMobile(emailOrMobile);
-        if (null == user) {
-            throw new NotFoundException("User does not exist for emailorMobile " + emailOrMobile);
-        }
-        List<OrderDO> orderDOs = store.createQuery(OrderDO.class).field("userID").equal(user.getId()).asList();
-        return transformOrderDOs(orderDOs);
-    }
+//    public static List<Order> getOrdersByEmailOrMobile(String emailOrMobile) throws NotFoundException {
+//        User user = UserDAO.getUserByEmailOrMobile(emailOrMobile);
+//        if (null == user) {
+//            throw new NotFoundException("User does not exist for emailorMobile " + emailOrMobile);
+//        }
+//        List<OrderDO> orderDOs = store.createQuery(OrderDO.class).field("userID").equal(user.getId()).asList();
+//        return transformOrderDOs(orderDOs);
+//    }
 
-    public static List<Order> getOrdersByDate(Date date) {
-        List<OrderDO> orderDOs = store.createQuery(OrderDO.class).field("date").equal(date).asList();
-        return transformOrderDOs(orderDOs);
-    }
-
-    public static List<Order> getOrderByDateRange(Date startDate, Date endDate) {
-        Query<OrderDO> query = store.createQuery(OrderDO.class);
-        query.and(
-                query.criteria("date").lessThan(endDate),
-                query.criteria("date").greaterThan(startDate));
-        return transformOrderDOs(query.asList());
-    }
+//    public static List<Order> getOrdersByDate(Date date) {
+//        List<OrderDO> orderDOs = store.createQuery(OrderDO.class).field("date").equal(date).asList();
+//        return transformOrderDOs(orderDOs);
+//    }
+//
+//    public static List<Order> getOrderByDateRange(Date startDate, Date endDate) {
+//        Query<OrderDO> query = store.createQuery(OrderDO.class);
+//        query.and(
+//                query.criteria("date").lessThan(endDate),
+//                query.criteria("date").greaterThan(startDate));
+//        return transformOrderDOs(query.asList());
+//    }
 
     public static List<Order> getOrdersByThirdPartyID(String thirdPartyID) {
         List<OrderDO> orderDOs = store.createQuery(OrderDO.class).field("thirdPartyID").equal(thirdPartyID).asList();

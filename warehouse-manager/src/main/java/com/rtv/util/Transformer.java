@@ -1,12 +1,15 @@
 package com.rtv.util;
 
 import com.rtv.api.auth.Batch;
+import com.rtv.api.auth.Bill;
 import com.rtv.api.auth.Order;
 import com.rtv.api.auth.Product;
 import com.rtv.api.auth.ThirdParty;
 import com.rtv.api.auth.User;
 import com.rtv.store.BatchDAO;
 import com.rtv.store.BatchDO;
+import com.rtv.store.BillDO;
+import com.rtv.store.OrderDAO;
 import com.rtv.store.OrderDO;
 import com.rtv.store.ProductDAO;
 import com.rtv.store.ProductDO;
@@ -27,6 +30,7 @@ public class Transformer {
         User user = new User();
         user.setId(userDO.getId());
         user.setName(userDO.getName());
+        user.setUsername(userDO.getUsername());
         user.setEmail(userDO.getEmail());
         user.setMobile(userDO.getMobile());
         return user;
@@ -120,14 +124,11 @@ public class Transformer {
         order.setId(orderDO.getId());
         order.setProduct(ProductDAO.getProductByID(orderDO.getProductID()));
         order.setBatch(BatchDAO.getBatchByID(orderDO.getBatchID()));
-        order.setThirdParty(ThirdPartyDAO.getThirdPartyByID(orderDO.getThirdPartyID()));
+
         order.setPrice(orderDO.getPrice());
-        order.setDate(orderDO.getDate());
         order.setGst(orderDO.getGst());
-        order.setOrderType(orderDO.getOrderType());
         order.setQuantity(orderDO.getQuantity());
         order.setTotalCost(orderDO.getTotalCost());
-        order.setUserEmail(UserDAO.getUserByID(orderDO.getUserID()).getEmail());
         return order;
     }
 
@@ -138,6 +139,38 @@ public class Transformer {
         List<Order> list = new ArrayList<>(orderDOs.size());
         for (OrderDO orderDO : orderDOs) {
             list.add(transform(orderDO));
+        }
+        return list;
+    }
+
+    public static Bill transform(BillDO billDO) {
+        if (null == billDO) {
+            return null;
+        }
+        Bill bill = new Bill();
+        bill.setBillType(billDO.getBillType());
+        bill.setBillNumber(billDO.getBillNumber());
+        bill.setThirdParty(ThirdPartyDAO.getThirdPartyByID(billDO.getThirdPartyID()));
+        bill.setDate(billDO.getDate());
+
+        List<String> orderIDs = billDO.getOrderIDs();
+        List<Order> orders = new ArrayList<>(orderIDs.size());
+        for (String orderID : orderIDs) {
+            orders.add(OrderDAO.getOrderByID(orderID));
+        }
+        bill.setOrders(orders);
+        bill.setUsername(UserDAO.getUserByID(billDO.getUserID()).getUsername());
+
+        return bill;
+    }
+
+    public static List<Bill> transformBillDOs(List<BillDO> billDOs) {
+        if (null == billDOs) {
+            return null;
+        }
+        List<Bill> list = new ArrayList<>(billDOs.size());
+        for (BillDO billDO : billDOs) {
+            list.add(transform(billDO));
         }
         return list;
     }

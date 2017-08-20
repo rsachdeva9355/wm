@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
 
 /**
- * Created by admin on 09/08/17.
+ * Created by Tanvi on 09/08/17.
  */
 
 @Entity(value = "inventory", noClassnameStored = true)
