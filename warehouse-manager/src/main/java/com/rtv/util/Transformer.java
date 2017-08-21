@@ -81,6 +81,7 @@ public class Transformer {
         thirdParty.setGstTIN(thirdPartyDO.getGstTIN());
         thirdParty.setLicenseNumber(thirdPartyDO.getLicenseNumber());
         thirdParty.setPhonenumber(thirdPartyDO.getPhonenumber());
+        thirdParty.setAddress(thirdPartyDO.getAddress());
         return thirdParty;
     }
 
@@ -157,7 +158,6 @@ public class Transformer {
         bill.setBillNumber(billDO.getBillNumber());
         bill.setThirdParty(ThirdPartyDAO.getThirdPartyByID(billDO.getThirdPartyID()));
         bill.setDate(billDO.getDate());
-        bill.setAddress(billDO.getAddress());
         bill.setCgst(billDO.getCgst());
         bill.setSgst(billDO.getSgst());
         bill.setTotalPrice(billDO.getTotalPrice());

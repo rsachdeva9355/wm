@@ -31,6 +31,7 @@ public class ThirdPartyDO extends PersistedEntity {
     private String phonenumber;
     private String gstTIN;
     private String licenseNumber;
+    private String address;
 
     public ThirdPartyDO() {
         this.id = new ObjectId().toString();
@@ -78,5 +79,13 @@ public class ThirdPartyDO extends PersistedEntity {
 
     public void setLicenseNumber(String licenseNumber) {
         this.licenseNumber = licenseNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

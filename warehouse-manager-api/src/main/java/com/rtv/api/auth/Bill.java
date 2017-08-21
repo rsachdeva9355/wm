@@ -40,7 +40,6 @@ public class Bill {
 
     private String thirdPartyID;
     private ThirdParty thirdParty;
-    private String address;
 
     @NotNull
     private Float totalPrice;
@@ -122,14 +121,6 @@ public class Bill {
 
     public void setThirdParty(ThirdParty thirdParty) {
         this.thirdParty = thirdParty;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Float getTotalPrice() {

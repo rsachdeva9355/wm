@@ -29,7 +29,6 @@ public class BillDO {
     private Date date;
     private String thirdPartyID;
     private boolean discarded;
-    private String address;
     private Float totalPrice;
     private Float sgst;
     private Float cgst;
@@ -100,14 +99,6 @@ public class BillDO {
 
     public void setDiscarded(boolean discarded) {
         this.discarded = discarded;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Float getTotalPrice() {

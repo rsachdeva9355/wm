@@ -23,6 +23,7 @@ public class ThirdParty {
     private String phonenumber;
     private String gstTIN;
     private String licenseNumber;
+    private String address;
 
     public String getId() {
         return id;
@@ -70,5 +71,13 @@ public class ThirdParty {
 
     public void setLicenseNumber(String licenseNumber) {
         this.licenseNumber = licenseNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -90,7 +90,6 @@ public class BillResource {
         billDO.setUserID(user.getId());
         billDO.setBillNumber(bill.getBillNumber());
         billDO.setDate(bill.getDate());
-        billDO.setAddress(bill.getAddress());
         billDO.setCgst(bill.getCgst());
         billDO.setSgst(bill.getSgst());
         billDO.setTotalPrice(bill.getTotalPrice());
@@ -116,6 +115,7 @@ public class BillResource {
             thirdPartyDO.setGstTIN(thirdParty.getGstTIN());
             thirdPartyDO.setLicenseNumber(thirdParty.getLicenseNumber());
             thirdPartyDO.setPhonenumber(thirdParty.getPhonenumber());
+            thirdPartyDO.setAddress(thirdParty.getAddress());
             store.save(thirdPartyDO);
             thirdParty.setId(thirdPartyDO.getId());
             billDO.setThirdPartyID(thirdPartyDO.getId());
@@ -288,7 +288,6 @@ public class BillResource {
 
         billDO.setBillNumber(bill.getBillNumber());
         billDO.setDate(bill.getDate());
-        billDO.setAddress(bill.getAddress());
         billDO.setCgst(bill.getCgst());
         billDO.setSgst(bill.getSgst());
         billDO.setTotalPrice(bill.getTotalPrice());
@@ -314,6 +313,7 @@ public class BillResource {
             thirdPartyDO.setGstTIN(thirdParty.getGstTIN());
             thirdPartyDO.setLicenseNumber(thirdParty.getLicenseNumber());
             thirdPartyDO.setName(thirdParty.getName());
+            thirdPartyDO.setAddress(thirdParty.getAddress());
             store.save(thirdPartyDO);
             thirdParty.setId(thirdPartyDO.getId());
             billDO.setThirdPartyID(thirdPartyDO.getId());
