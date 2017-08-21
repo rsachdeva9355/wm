@@ -133,7 +133,7 @@ public class BillResource {
 
     private OrderDO persistOrder(Order order) {
         OrderDO orderDO = new OrderDO();
-        order.setOrderType(order.getOrderType());
+        orderDO.setOrderType(order.getOrderType());
 
         Product product = order.getProduct();
         if (null == product) {
