@@ -113,6 +113,9 @@ public class BillResource {
             ThirdPartyDO thirdPartyDO = new ThirdPartyDO();
             thirdPartyDO.setName(thirdParty.getName());
             thirdPartyDO.setType(thirdParty.getType());
+            thirdPartyDO.setGstTIN(thirdParty.getGstTIN());
+            thirdPartyDO.setLicenseNumber(thirdParty.getLicenseNumber());
+            thirdPartyDO.setPhonenumber(thirdParty.getPhonenumber());
             store.save(thirdPartyDO);
             thirdParty.setId(thirdPartyDO.getId());
             billDO.setThirdPartyID(thirdPartyDO.getId());
@@ -308,6 +311,9 @@ public class BillResource {
             ThirdPartyDO thirdPartyDO = new ThirdPartyDO();
             thirdPartyDO.setName(thirdParty.getName());
             thirdPartyDO.setType(thirdParty.getType());
+            thirdPartyDO.setGstTIN(thirdParty.getGstTIN());
+            thirdPartyDO.setLicenseNumber(thirdParty.getLicenseNumber());
+            thirdPartyDO.setName(thirdParty.getName());
             store.save(thirdPartyDO);
             thirdParty.setId(thirdPartyDO.getId());
             billDO.setThirdPartyID(thirdPartyDO.getId());

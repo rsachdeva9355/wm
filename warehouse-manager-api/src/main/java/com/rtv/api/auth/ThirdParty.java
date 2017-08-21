@@ -20,6 +20,10 @@ public class ThirdParty {
     @NotBlank
     private ThirdPartyType type;
 
+    private String phonenumber;
+    private String gstTIN;
+    private String licenseNumber;
+
     public String getId() {
         return id;
     }
@@ -42,5 +46,29 @@ public class ThirdParty {
 
     public void setType(ThirdPartyType type) {
         this.type = type;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getGstTIN() {
+        return gstTIN;
+    }
+
+    public void setGstTIN(String gstTIN) {
+        this.gstTIN = gstTIN;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
 }

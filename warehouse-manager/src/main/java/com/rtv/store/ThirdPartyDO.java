@@ -28,6 +28,9 @@ public class ThirdPartyDO extends PersistedEntity {
     private String id;
     private String name;
     private ThirdParty.ThirdPartyType type;
+    private String phonenumber;
+    private String gstTIN;
+    private String licenseNumber;
 
     public ThirdPartyDO() {
         this.id = new ObjectId().toString();
@@ -51,5 +54,29 @@ public class ThirdPartyDO extends PersistedEntity {
 
     public void setType(ThirdParty.ThirdPartyType type) {
         this.type = type;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getGstTIN() {
+        return gstTIN;
+    }
+
+    public void setGstTIN(String gstTIN) {
+        this.gstTIN = gstTIN;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
 }

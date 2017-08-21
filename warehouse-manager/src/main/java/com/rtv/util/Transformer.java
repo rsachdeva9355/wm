@@ -78,6 +78,9 @@ public class Transformer {
         thirdParty.setId(thirdPartyDO.getId());
         thirdParty.setName(thirdPartyDO.getName());
         thirdParty.setType(thirdPartyDO.getType());
+        thirdParty.setGstTIN(thirdPartyDO.getGstTIN());
+        thirdParty.setLicenseNumber(thirdPartyDO.getLicenseNumber());
+        thirdParty.setPhonenumber(thirdPartyDO.getPhonenumber());
         return thirdParty;
     }
 
