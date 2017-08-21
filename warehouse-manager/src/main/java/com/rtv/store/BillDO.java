@@ -1,8 +1,6 @@
 package com.rtv.store;
 
-import java.util.Date;
-import java.util.List;
-
+import com.rtv.api.auth.Bill;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
@@ -11,7 +9,8 @@ import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
 import org.mongodb.morphia.utils.IndexType;
 
-import com.rtv.api.auth.Bill;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Tanvi on 19/08/17.
@@ -30,6 +29,10 @@ public class BillDO {
     private Date date;
     private String thirdPartyID;
     private boolean discarded;
+    private String address;
+    private Float totalPrice;
+    private Float sgst;
+    private Float cgst;
 
     public BillDO() {
         this.id = new ObjectId().toString();
@@ -97,5 +100,37 @@ public class BillDO {
 
     public void setDiscarded(boolean discarded) {
         this.discarded = discarded;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Float getSgst() {
+        return sgst;
+    }
+
+    public void setSgst(Float sgst) {
+        this.sgst = sgst;
+    }
+
+    public Float getCgst() {
+        return cgst;
+    }
+
+    public void setCgst(Float cgst) {
+        this.cgst = cgst;
     }
 }

@@ -1,12 +1,11 @@
 package com.rtv.api.auth;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Tanvi on 19/08/17.
@@ -41,6 +40,16 @@ public class Bill {
 
     private String thirdPartyID;
     private ThirdParty thirdParty;
+    private String address;
+
+    @NotNull
+    private Float totalPrice;
+
+    @NotNull
+    private Float sgst;
+
+    @NotNull
+    private Float cgst;
 
 
     public String getId() {
@@ -113,5 +122,37 @@ public class Bill {
 
     public void setThirdParty(ThirdParty thirdParty) {
         this.thirdParty = thirdParty;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Float getSgst() {
+        return sgst;
+    }
+
+    public void setSgst(Float sgst) {
+        this.sgst = sgst;
+    }
+
+    public Float getCgst() {
+        return cgst;
+    }
+
+    public void setCgst(Float cgst) {
+        this.cgst = cgst;
     }
 }

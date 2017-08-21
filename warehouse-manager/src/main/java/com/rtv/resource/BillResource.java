@@ -1,31 +1,5 @@
 package com.rtv.resource;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Criteria;
-import org.mongodb.morphia.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Bill;
@@ -44,10 +18,33 @@ import com.rtv.store.ProductDO;
 import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.ThirdPartyDO;
 import com.rtv.store.UserDAO;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Criteria;
+import org.mongodb.morphia.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformBillDOs;
@@ -93,6 +90,10 @@ public class BillResource {
         billDO.setUserID(user.getId());
         billDO.setBillNumber(bill.getBillNumber());
         billDO.setDate(bill.getDate());
+        billDO.setAddress(bill.getAddress());
+        billDO.setCgst(bill.getCgst());
+        billDO.setSgst(bill.getSgst());
+        billDO.setTotalPrice(bill.getTotalPrice());
 
         ThirdParty thirdParty = bill.getThirdParty();
         if (null == thirdParty) {
@@ -283,6 +284,10 @@ public class BillResource {
 
         billDO.setBillNumber(bill.getBillNumber());
         billDO.setDate(bill.getDate());
+        billDO.setAddress(bill.getAddress());
+        billDO.setCgst(bill.getCgst());
+        billDO.setSgst(bill.getSgst());
+        billDO.setTotalPrice(bill.getTotalPrice());
 
         ThirdParty thirdParty = bill.getThirdParty();
         if (null == thirdParty) {
