@@ -1,10 +1,12 @@
 package com.rtv.api.auth;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Created by Tanvi on 19/08/17.
@@ -22,7 +24,7 @@ public class Bill {
 
     private String userID;
 
-    @NotNull
+    @NotBlank
     private String username;
 
     @NotNull

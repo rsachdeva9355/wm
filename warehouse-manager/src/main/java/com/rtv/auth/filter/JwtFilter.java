@@ -1,16 +1,8 @@
 package com.rtv.auth.filter;
 
-import com.rtv.api.auth.User;
-import com.rtv.auth.JwtHelper;
-import com.rtv.auth.UserContext;
-import com.rtv.store.UserDAO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -20,20 +12,30 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.rtv.api.auth.User;
+import com.rtv.auth.JwtHelper;
+import com.rtv.auth.UserContext;
+import com.rtv.store.UserDAO;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 
 public class JwtFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(JwtFilter.class);
 
     private final String jwtTokenKey;
 
-    public static final Set<String> byPassedUrls = new HashSet<>();
+    private static final Set<String> byPassedUrls = new HashSet<>();
     static {
         byPassedUrls.add("/wm/authenticate");
         byPassedUrls.add("/wm/swagger");
-        byPassedUrls.add("/wm/bills");
     }
 
     public JwtFilter(@NotBlank String jwtTokenKey) {

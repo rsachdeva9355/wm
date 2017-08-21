@@ -46,7 +46,7 @@ public class UserDAO {
 //    }
 
     public static UserDO queryUserByUsername(String username) {
-        Query<UserDO> query = store.createQuery(UserDO.class).filter("username", username);
+        Query<UserDO> query = store.createQuery(UserDO.class).field("username").equal(username);
         return query.get();
     }
 

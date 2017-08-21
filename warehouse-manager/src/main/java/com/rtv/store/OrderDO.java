@@ -30,7 +30,8 @@ public class OrderDO extends PersistedEntity {
     private String productID;
     private String batchID;
     private Float price; //of individual product
-    private Float gst;
+    private Float sgst;
+    private Float cgst;
     private Float totalCost;
     private Integer quantity;
 
@@ -66,12 +67,20 @@ public class OrderDO extends PersistedEntity {
         this.price = price;
     }
 
-    public Float getGst() {
-        return gst;
+    public Float getSgst() {
+        return sgst;
     }
 
-    public void setGst(Float gst) {
-        this.gst = gst;
+    public void setSgst(Float sgst) {
+        this.sgst = sgst;
+    }
+
+    public Float getCgst() {
+        return cgst;
+    }
+
+    public void setCgst(Float cgst) {
+        this.cgst = cgst;
     }
 
     public Float getTotalCost() {

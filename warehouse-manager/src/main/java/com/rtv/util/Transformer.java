@@ -1,5 +1,8 @@
 package com.rtv.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Bill;
 import com.rtv.api.auth.Order;
@@ -17,9 +20,6 @@ import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.ThirdPartyDO;
 import com.rtv.store.UserDAO;
 import com.rtv.store.UserDO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Transformer {
 
@@ -126,7 +126,8 @@ public class Transformer {
         order.setBatch(BatchDAO.getBatchByID(orderDO.getBatchID()));
 
         order.setPrice(orderDO.getPrice());
-        order.setGst(orderDO.getGst());
+        order.setCgst(orderDO.getCgst());
+        order.setSgst(orderDO.getSgst());
         order.setQuantity(orderDO.getQuantity());
         order.setTotalCost(orderDO.getTotalCost());
         return order;

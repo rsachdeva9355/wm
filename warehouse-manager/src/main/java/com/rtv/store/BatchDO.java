@@ -8,6 +8,7 @@ import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.utils.IndexType;
 
 /**
  * Created by Tanvi on 09/08/17.
@@ -26,6 +27,11 @@ import org.mongodb.morphia.annotations.Indexes;
                 },
                 unique = true
 
+        ),
+        @Index(
+            fields = {
+                @Field(value = "code", type = IndexType.TEXT)
+            }
         )
 })
 public class BatchDO extends PersistedEntity {

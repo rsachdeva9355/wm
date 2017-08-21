@@ -23,7 +23,7 @@ public class JwtHelper {
             .setIssuer(ISSUER)
             .setIssuedAt(new Date())
             .setExpiration(expiry)
-            .setSubject(user.getEmail())
+            .setSubject(user.getUsername())
             .signWith(SignatureAlgorithm.HS256, SIGNING_KEY.getBytes())
             .compact();
     }

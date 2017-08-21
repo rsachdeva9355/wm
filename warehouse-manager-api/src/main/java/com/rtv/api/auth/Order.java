@@ -19,7 +19,10 @@ public class Order {
     private Float price; //of individual product
 
     @NotNull
-    private Float gst;
+    private Float sgst;
+
+    @NotNull
+    private Float cgst;
 
     @NotNull
     private Float totalCost;
@@ -75,12 +78,20 @@ public class Order {
         this.price = price;
     }
 
-    public Float getGst() {
-        return gst;
+    public Float getSgst() {
+        return sgst;
     }
 
-    public void setGst(Float gst) {
-        this.gst = gst;
+    public void setSgst(Float sgst) {
+        this.sgst = sgst;
+    }
+
+    public Float getCgst() {
+        return cgst;
+    }
+
+    public void setCgst(Float cgst) {
+        this.cgst = cgst;
     }
 
     public Float getTotalCost() {

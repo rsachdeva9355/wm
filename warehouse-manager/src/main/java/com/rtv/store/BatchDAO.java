@@ -1,8 +1,11 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.Batch;
+import java.util.List;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
+
+import com.rtv.api.auth.Batch;
 
 import static com.rtv.util.Transformer.transform;
 
@@ -41,6 +44,10 @@ public class BatchDAO {
     private static BatchDO queryBatchByCode(String batchCode) {
         Query<BatchDO> query = store.createQuery(BatchDO.class).field("code").equal(batchCode);
         return query.get();
+    }
+
+    public static List<BatchDO> searchByCode(String query) {
+        return store.createQuery(BatchDO.class).search(query).asList();
     }
 
 }

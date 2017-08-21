@@ -1,5 +1,18 @@
 package com.rtv;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+
+import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.JwtContext;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.codahale.metrics.SharedMetricRegistries;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -13,6 +26,7 @@ import com.rtv.config.WarehouseManagerConfiguration;
 import com.rtv.resource.AuthResource;
 import com.rtv.resource.BillResource;
 import com.rtv.resource.OrderResource;
+import com.rtv.resource.SearchResource;
 import com.rtv.resource.UserResource;
 import com.rtv.store.BatchDAO;
 import com.rtv.store.BillDAO;
@@ -20,6 +34,7 @@ import com.rtv.store.OrderDAO;
 import com.rtv.store.ProductDAO;
 import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.UserDAO;
+
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.Authenticator;
@@ -27,17 +42,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.consumer.JwtContext;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import java.util.EnumSet;
 
 public class WarehouseManager extends Application<WarehouseManagerConfiguration> {
 
@@ -117,6 +121,9 @@ public class WarehouseManager extends Application<WarehouseManagerConfiguration>
 
         AuthResource authResource = new AuthResource();
         environment.jersey().register(authResource);
+
+        SearchResource searchResource = new SearchResource();
+        environment.jersey().register(searchResource);
 
         JwtFilter jwtFilter = new JwtFilter("kukky");
         environment.servlets().addFilter("JwtFilter", jwtFilter)

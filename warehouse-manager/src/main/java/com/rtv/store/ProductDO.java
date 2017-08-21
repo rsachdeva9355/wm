@@ -6,6 +6,7 @@ import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.utils.IndexType;
 
 /**
  * Created by Tanvi on 09/08/17.
@@ -22,6 +23,11 @@ import org.mongodb.morphia.annotations.Indexes;
                 fields = {
                         @Field("genericName")
                 }
+        ),
+        @Index(
+            fields = {
+                @Field(value = "name", type = IndexType.TEXT)
+            }
         )
 })
 public class ProductDO extends PersistedEntity {

@@ -1,8 +1,11 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.ThirdParty;
+import java.util.List;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
+
+import com.rtv.api.auth.ThirdParty;
 
 import static com.rtv.util.Transformer.transform;
 
@@ -37,5 +40,9 @@ public class ThirdPartyDAO {
     private static ThirdPartyDO queryThirdPartyByName(String thirdPartyName) {
         Query<ThirdPartyDO> query = store.createQuery(ThirdPartyDO.class).field("name").equal(thirdPartyName);
         return query.get();
+    }
+
+    public static List<ThirdPartyDO> searchByCode(String query) {
+        return store.createQuery(ThirdPartyDO.class).search(query).asList();
     }
 }
