@@ -11,10 +11,13 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.rtv.api.auth.Batch;
+import com.rtv.api.auth.Bill;
 import com.rtv.api.auth.Product;
 import com.rtv.api.auth.ThirdParty;
 import com.rtv.store.BatchDAO;
 import com.rtv.store.BatchDO;
+import com.rtv.store.BillDAO;
+import com.rtv.store.BillDO;
 import com.rtv.store.ProductDAO;
 import com.rtv.store.ProductDO;
 import com.rtv.store.ThirdPartyDAO;
@@ -42,6 +45,10 @@ public class SearchResource {
             List<ThirdPartyDO> thirdParties = ThirdPartyDAO.searchByCode(query);
             searchResult.setThirdParties(Transformer.transformThirdPartyDOs(thirdParties));
         }
+        if (isBlank(type) || "bill".equals(type)) {
+            List<BillDO> bills = BillDAO.searchByCode(query);
+            searchResult.setBills(Transformer.transformBillDOs(bills));
+        }
         return searchResult;
     }
 
@@ -50,6 +57,7 @@ public class SearchResource {
         private List<Product> products;
         private List<Batch> batches;
         private List<ThirdParty> thirdParties;
+        private List<Bill> bills;
 
         public List<Product> getProducts() {
             return products;
@@ -73,6 +81,14 @@ public class SearchResource {
 
         public void setThirdParties(List<ThirdParty> thirdParties) {
             this.thirdParties = thirdParties;
+        }
+
+        public List<Bill> getBills() {
+            return bills;
+        }
+
+        public void setBills(List<Bill> bills) {
+            this.bills = bills;
         }
     }
 }

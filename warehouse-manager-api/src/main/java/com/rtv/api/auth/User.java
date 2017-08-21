@@ -1,10 +1,10 @@
 package com.rtv.api.auth;
 
+import java.security.Principal;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-
-import java.security.Principal;
 
 public class User implements Principal {
 
@@ -13,11 +13,9 @@ public class User implements Principal {
     @NotBlank
     private String name;
 
-    @NotBlank
     @Email
     private String email;
 
-    @NotBlank
     @Length(min = 10, max = 10, message = "Please enter a valid 10 digit mobile number")
     private String mobile;
 

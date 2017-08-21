@@ -1,18 +1,25 @@
 package com.rtv.store;
 
-import com.rtv.api.auth.Bill;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-
 import java.util.Date;
 import java.util.List;
+
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.utils.IndexType;
+
+import com.rtv.api.auth.Bill;
 
 /**
  * Created by Tanvi on 19/08/17.
  */
 @Entity(value = "bill", noClassnameStored = true)
-
+@Indexes(
+    @Index(fields = @Field(value = "billNumber", type = IndexType.TEXT))
+)
 public class BillDO {
     @Id
     private String id;

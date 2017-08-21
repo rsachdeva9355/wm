@@ -14,13 +14,6 @@ import com.rtv.api.auth.User;
 @Indexes({
         @Index(
                 fields = {
-                        @Field("email"),
-                        @Field("mobile")
-                },
-                unique = true
-        ),
-        @Index(
-                fields = {
                         @Field("username")
                 },
                 unique = true
@@ -35,9 +28,10 @@ public class UserDO extends PersistedEntity {
     public UserDO(User user) {
         id = new ObjectId().toString();
         name = user.getName();
+        username = user.getUsername();
         email = user.getEmail();
         mobile = user.getMobile();
-        password = DigestUtils.md5Hex(mobile + "{" + email + "}");
+        password = DigestUtils.md5Hex(mobile + "{" + username + "}");
     }
 
     @Id
