@@ -7,6 +7,8 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
 
+import com.rtv.api.auth.Order.OrderType;
+
 /**
  * Created by Tanvi on 09/08/17.
  */
@@ -29,6 +31,7 @@ public class OrderDO extends PersistedEntity {
     private String id;
     private String productID;
     private String batchID;
+    private OrderType orderType;
     private Float price; //of individual product
     private Float sgst;
     private Float cgst;
@@ -57,6 +60,14 @@ public class OrderDO extends PersistedEntity {
 
     public void setBatchID(String batchID) {
         this.batchID = batchID;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public Float getPrice() {

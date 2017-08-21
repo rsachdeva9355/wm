@@ -7,6 +7,10 @@ import javax.validation.constraints.NotNull;
  */
 public class Order {
 
+    public enum OrderType {
+        SALE, PURCHASE
+    }
+
     private String id;
 
     private String productID;
@@ -14,6 +18,8 @@ public class Order {
 
     private String batchID;
     private Batch batch;
+
+    private OrderType orderType;
 
     @NotNull
     private Float price; //of individual product
@@ -60,6 +66,14 @@ public class Order {
 
     public void setBatchID(String batchID) {
         this.batchID = batchID;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public Batch getBatch() {

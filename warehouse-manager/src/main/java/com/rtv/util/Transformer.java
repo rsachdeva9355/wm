@@ -124,7 +124,7 @@ public class Transformer {
         order.setId(orderDO.getId());
         order.setProduct(ProductDAO.getProductByID(orderDO.getProductID()));
         order.setBatch(BatchDAO.getBatchByID(orderDO.getBatchID()));
-
+        order.setOrderType(orderDO.getOrderType());
         order.setPrice(orderDO.getPrice());
         order.setCgst(orderDO.getCgst());
         order.setSgst(orderDO.getSgst());
