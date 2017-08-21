@@ -37,6 +37,7 @@ public class OrderDO extends PersistedEntity {
     private Float cgst;
     private Float totalCost;
     private Integer quantity;
+    private String HSN;
 
     public OrderDO() {
         this.id = new ObjectId().toString();
@@ -108,5 +109,13 @@ public class OrderDO extends PersistedEntity {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getHSN() {
+        return HSN;
+    }
+
+    public void setHSN(String HSN) {
+        this.HSN = HSN;
     }
 }

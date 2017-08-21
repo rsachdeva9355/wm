@@ -130,6 +130,7 @@ public class Transformer {
         order.setSgst(orderDO.getSgst());
         order.setQuantity(orderDO.getQuantity());
         order.setTotalCost(orderDO.getTotalCost());
+        order.setHSN(orderDO.getHSN());
         return order;
     }
 

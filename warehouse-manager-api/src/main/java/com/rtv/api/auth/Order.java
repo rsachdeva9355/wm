@@ -36,6 +36,8 @@ public class Order {
     @NotNull
     private Integer quantity;
 
+    private String HSN;
+
     public String getId() {
         return id;
     }
@@ -122,5 +124,13 @@ public class Order {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getHSN() {
+        return HSN;
+    }
+
+    public void setHSN(String HSN) {
+        this.HSN = HSN;
     }
 }

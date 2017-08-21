@@ -193,6 +193,7 @@ public class BillResource {
         orderDO.setSgst(order.getSgst());
         orderDO.setQuantity(order.getQuantity());
         orderDO.setTotalCost(order.getTotalCost());
+        orderDO.setHSN(order.getHSN());
         store.save(orderDO);
         return orderDO;
     }
@@ -398,6 +399,7 @@ public class BillResource {
         orderDO.setSgst(order.getSgst());
         orderDO.setQuantity(order.getQuantity());
         orderDO.setTotalCost(order.getTotalCost());
+        orderDO.setHSN(order.getHSN());
         store.save(orderDO);
         return orderDO;
     }
