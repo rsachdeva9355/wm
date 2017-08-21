@@ -31,7 +31,7 @@ public class UserDO extends PersistedEntity {
         username = user.getUsername();
         email = user.getEmail();
         mobile = user.getMobile();
-        password = DigestUtils.md5Hex(mobile + "{" + username + "}");
+        password = DigestUtils.md5Hex(username + "{" + username + "}");
     }
 
     @Id
