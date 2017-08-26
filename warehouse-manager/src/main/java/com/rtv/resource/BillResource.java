@@ -293,7 +293,15 @@ public class BillResource {
             throw new BadRequestException("Bill with id " + id + " no longer exists");
         }
 
-        billDO.setBillNumber(bill.getBillNumber());
+        Bill.BillType billType = bill.getBillType();
+        billDO.setBillType(billType);
+        String billNumber = bill.getBillNumber();
+        if (Bill.BillType.PURCHASE.equals(billType)) {
+            if (StringUtils.isBlank(billNumber)) {
+                throw new BadRequestException("Purchase bill cannot be without a bill number");
+            }
+        }
+        billDO.setBillNumber(billNumber);
         billDO.setDate(bill.getDate());
         billDO.setCgst(bill.getCgst());
         billDO.setSgst(bill.getSgst());
@@ -348,7 +356,6 @@ public class BillResource {
         }
 
         billDO.setOrderIDs(newOrderIDs);
-        billDO.setBillType(bill.getBillType());
         store.save(billDO);
         bill.setId(billDO.getId());
         return bill;
