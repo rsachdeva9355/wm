@@ -32,7 +32,6 @@ public class Bill {
     @NotEmpty
     private List<Order> orders;
 
-    @NotNull
     private String billNumber;
 
     @NotNull
