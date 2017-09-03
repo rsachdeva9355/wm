@@ -1,5 +1,31 @@
 package com.rtv.resource;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Criteria;
+import org.mongodb.morphia.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtv.api.auth.Batch;
 import com.rtv.api.auth.Bill;
@@ -18,33 +44,10 @@ import com.rtv.store.ProductDO;
 import com.rtv.store.ThirdPartyDAO;
 import com.rtv.store.ThirdPartyDO;
 import com.rtv.store.UserDAO;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Criteria;
-import org.mongodb.morphia.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformBillDOs;
@@ -428,22 +431,17 @@ public class BillResource {
     @ApiOperation(value = "Delete a bill")
     @Produces(MediaType.APPLICATION_JSON)
     public
-    void delete(@Valid
-                @NotNull
-                @ApiParam("bill to be deleted")
-                Bill bill
-               )
+    void delete(@Valid @NotNull @ApiParam("bill to be deleted") @QueryParam("id") String billId)
     {
-        String id = bill.getId();
-        if (null == id) {
-            throw new BadRequestException("Cannot delete a bill without an id");
+        if (StringUtils.isBlank(billId)) {
+            throw new BadRequestException("Please specify a bill id");
         }
-        BillDO billDO = BillDAO.getBillDOByID(id);
+        BillDO billDO = BillDAO.getBillDOByID(billId);
         if (null == billDO) {
-            throw new BadRequestException("Bill with id " + id + " does not exist");
+            throw new BadRequestException("Bill with id " + billId + " does not exist");
         }
         if (billDO.isDiscarded()) {
-            throw new BadRequestException("Bill with id " + id + " has already been deleted");
+            throw new BadRequestException("Bill with id " + billId + " has already been deleted");
         }
         billDO.setDiscarded(false);
         store.save(billDO);
