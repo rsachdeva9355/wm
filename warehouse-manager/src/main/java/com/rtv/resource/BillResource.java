@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -441,9 +442,9 @@ public class BillResource {
             throw new BadRequestException("Bill with id " + billId + " does not exist");
         }
         if (billDO.isDiscarded()) {
-            throw new BadRequestException("Bill with id " + billId + " has already been deleted");
+            throw new ClientErrorException("Bill with id " + billId + " has already been deleted", 409);
         }
-        billDO.setDiscarded(false);
+        billDO.setDiscarded(true);
         store.save(billDO);
     }
 }
