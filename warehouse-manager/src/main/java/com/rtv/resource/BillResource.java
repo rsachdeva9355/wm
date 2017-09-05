@@ -1,8 +1,34 @@
 package com.rtv.resource;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rtv.api.auth.Batch;
+import com.rtv.api.auth.Bill;
+import com.rtv.api.auth.Order;
+import com.rtv.api.auth.Product;
+import com.rtv.api.auth.ThirdParty;
+import com.rtv.api.auth.User;
+import com.rtv.auth.UserContext;
+import com.rtv.store.BatchDAO;
+import com.rtv.store.BatchDO;
+import com.rtv.store.BillDAO;
+import com.rtv.store.BillDO;
+import com.rtv.store.OrderDAO;
+import com.rtv.store.OrderDO;
+import com.rtv.store.ProductDAO;
+import com.rtv.store.ProductDO;
+import com.rtv.store.ThirdPartyDAO;
+import com.rtv.store.ThirdPartyDO;
+import com.rtv.store.UserDAO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Criteria;
+import org.mongodb.morphia.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -18,37 +44,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Criteria;
-import org.mongodb.morphia.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rtv.api.auth.Batch;
-import com.rtv.api.auth.Bill;
-import com.rtv.api.auth.Order;
-import com.rtv.api.auth.Product;
-import com.rtv.api.auth.ThirdParty;
-import com.rtv.api.auth.User;
-import com.rtv.store.BatchDAO;
-import com.rtv.store.BatchDO;
-import com.rtv.store.BillDAO;
-import com.rtv.store.BillDO;
-import com.rtv.store.OrderDAO;
-import com.rtv.store.OrderDO;
-import com.rtv.store.ProductDAO;
-import com.rtv.store.ProductDO;
-import com.rtv.store.ThirdPartyDAO;
-import com.rtv.store.ThirdPartyDO;
-import com.rtv.store.UserDAO;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static com.rtv.util.Transformer.transform;
 import static com.rtv.util.Transformer.transformBillDOs;
@@ -241,6 +239,15 @@ public class BillResource {
                 throw new NotFoundException("User does not exist for username " + username);
             }
             criterion.add(query.criteria("userID").equal(user.getId()));
+        }
+
+        User currentUser = UserContext.current().getUser();
+        if (null == currentUser) {
+            throw new BadRequestException("Not logged in");
+        }
+
+        if (!(currentUser.getUsername().equals("rsaini") || currentUser.getUsername().equals("rachit")) ) {
+            criterion.add(query.criteria("userID").equal(currentUser.getId()));
         }
 
         if (exactDate != null) {
